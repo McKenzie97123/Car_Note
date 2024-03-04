@@ -30,12 +30,7 @@ public class MainActivity extends AppCompatActivity {
             final String userEmail = email.getText().toString();
             final String userPassword = password.getText().toString();
 
-            if (userEmail.isEmpty() || userPassword.isEmpty()){
-                Toast.makeText(MainActivity.this, "You need to fill up both fields to login", Toast.LENGTH_LONG).show();
-            }
-            String hashedUserPassword = passwordHasher.hashPassword(userPassword);
-
-            userLogin(userEmail, hashedUserPassword);
+            validateUser(userEmail, userPassword);
         });
 
         signUp.setOnClickListener(v -> registerLayout());
@@ -53,6 +48,15 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void validateUser(String email, String password) {
+        if (email.isEmpty() || password.isEmpty()){
+            Toast.makeText(MainActivity.this, "You need to fill up both fields to login", Toast.LENGTH_LONG).show();
+        }
+        String hashedUserPassword = passwordHasher.hashPassword(password);
+
+        userLogin(email, hashedUserPassword);
     }
 
     private void registerLayout(){
