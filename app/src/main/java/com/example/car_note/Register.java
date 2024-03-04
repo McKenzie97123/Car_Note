@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 public class Register extends AppCompatActivity {
     DBHelper dbUser = new DBHelper(this);
     PasswordHasher passwordHasher = new PasswordHasher();
-
     LoginRegisterValidator validator = new LoginRegisterValidator();
 
     @SuppressLint("ResourceType")
@@ -71,7 +70,7 @@ public class Register extends AppCompatActivity {
             return;
         }
 
-        if (validator.emailValidate(email)) {
+        if (!validator.emailValidate(email)) {
             Toast.makeText(this, "To register new user you need to fill" +
                     " up this form with valid email", Toast.LENGTH_LONG).show();
             return;
