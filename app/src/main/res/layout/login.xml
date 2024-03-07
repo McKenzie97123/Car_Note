@@ -22,7 +22,8 @@
             android:layout_marginStart="60dp"
             android:layout_marginEnd="60dp"
             android:inputType="textEmailAddress"
-            android:hint="@string/type_your_email"/>
+            android:hint="@string/type_your_email"
+            android:gravity="center"/>
     <EditText
             android:id="@+id/loginUserPass"
             android:layout_width="300dp"
@@ -31,7 +32,8 @@
             android:layout_marginStart="60dp"
             android:layout_marginEnd="60dp"
             android:inputType="textPassword"
-            android:hint="@string/type_your_password"/>
+            android:hint="@string/type_your_password"
+            android:gravity="center"/>
     <Button
             android:id="@+id/loginButton"
             android:text="@string/wrrrrumm"

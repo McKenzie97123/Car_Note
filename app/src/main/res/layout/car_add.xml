@@ -19,6 +19,7 @@
             android:layout_height="48dp"
             android:inputType="textEmailAddress"
             android:hint="@string/type_yours_car_brand"
+            android:gravity="center"
             android:id="@+id/carAddBrand"
             android:layout_marginTop="160dp"
             android:layout_marginStart="80dp"
@@ -30,6 +31,7 @@
             android:layout_height="48dp"
             android:inputType="text"
             android:hint="@string/type_yours_car_model"
+            android:gravity="center"
             android:id="@+id/carAddModel"
             android:layout_marginTop="225dp"
             android:layout_marginStart="80dp"
@@ -40,6 +42,7 @@
             android:layout_height="48dp"
             android:inputType="text"
             android:hint="@string/type_yours_car_color"
+            android:gravity="center"
             android:id="@+id/carAddColor"
             android:layout_marginTop="290dp"
             android:layout_marginStart="80dp"
@@ -50,18 +53,30 @@
             android:layout_height="48dp"
             android:inputType="text"
             android:hint="@string/type_yours_car_plate_number"
+            android:gravity="center"
             android:id="@+id/carAddPlateNumber"
             android:layout_marginTop="355dp"
             android:layout_marginStart="80dp"
             android:layout_marginEnd="80dp"
             android:autofillHints="plate number"
             tools:ignore="TextFields"/>
+    <AutoCompleteTextView
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:id="@+id/carAddDropDownList"
+            android:layout_marginTop="415dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginEnd="80dp"
+            android:hint="@string/define_body_click"
+            android:gravity="center"
+            android:background="@drawable/list_view_border"
+    />
     <Button
             android:text="@string/add_new_car"
             android:layout_width="350dp"
             android:layout_height="48dp"
             android:id="@+id/carAddButtonAddNewCar"
-            android:layout_marginTop="450dp"
+            android:layout_marginTop="500dp"
             android:layout_marginStart="60dp"
             android:layout_marginEnd="60dp"/>
     <Button
@@ -70,7 +85,7 @@
             android:layout_width="200dp"
             android:layout_height="48dp"
             android:id="@+id/carAddButtonBack"
-            android:layout_marginTop="520dp"
+            android:layout_marginTop="550dp"
             android:layout_marginStart="110dp"
             android:layout_marginEnd="110dp"/>
 </RelativeLayout>

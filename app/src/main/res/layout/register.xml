@@ -19,6 +19,7 @@
             android:layout_height="48dp"
             android:inputType="textEmailAddress"
             android:hint="@string/type_your_email"
+            android:gravity="center"
             android:id="@+id/registerEmail"
             android:layout_marginTop="160dp"
             android:layout_marginStart="80dp"
@@ -30,6 +31,7 @@
             android:layout_height="48dp"
             android:inputType="text"
             android:hint="@string/type_your_name"
+            android:gravity="center"
             android:id="@+id/registerName"
             android:layout_marginTop="225dp"
             android:layout_marginStart="80dp"
@@ -40,6 +42,7 @@
             android:layout_height="48dp"
             android:inputType="text"
             android:hint="@string/type_your_last_name"
+            android:gravity="center"
             android:id="@+id/registerLastName"
             android:layout_marginTop="290dp"
             android:layout_marginStart="80dp"
@@ -54,6 +57,7 @@
             android:layout_marginStart="80dp"
             android:layout_marginEnd="80dp"
             android:hint="@string/type_your_password"
+            android:gravity="center"
             android:autofillHints="password"/>
     <EditText
             android:layout_width="250dp"
@@ -64,6 +68,7 @@
             android:layout_marginStart="80dp"
             android:layout_marginEnd="80dp"
             android:hint="@string/repeat_your_password"
+            android:gravity="center"
             android:autofillHints="repeat password"/>
     <Button
             android:text="@string/register"
@@ -79,7 +84,7 @@
             android:layout_width="200dp"
             android:layout_height="48dp"
             android:id="@+id/registerButtonLogin"
-            android:layout_marginTop="590dp"
+            android:layout_marginTop="580dp"
             android:layout_marginStart="110dp"
             android:layout_marginEnd="110dp"/>
 </RelativeLayout>
