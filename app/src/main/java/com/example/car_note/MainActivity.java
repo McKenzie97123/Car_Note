@@ -1,7 +1,10 @@
 package com.example.car_note;
 
 import Database.DBHelper;
+import Exception.UserNotFoundException;
+import Class.User;
 import Service.PasswordHasher;
+import Service.UserManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -48,19 +51,30 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
+
+        setCurrentUser(email);
     }
 
     private void validateUser(String email, String password) {
-        if (email.isEmpty() || password.isEmpty()){
-            Toast.makeText(MainActivity.this, "You need to fill up both fields to login", Toast.LENGTH_LONG).show();
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "You need to fill up both fields to login", Toast.LENGTH_LONG).show();
         }
         String hashedUserPassword = passwordHasher.hashPassword(password);
 
         userLogin(email, hashedUserPassword);
     }
 
-    private void registerLayout(){
+    private void registerLayout() {
         Intent intent = new Intent(getApplicationContext(), Register.class);
         startActivity(intent);
+    }
+
+    private void setCurrentUser(String email) {
+        try {
+            User user = db.getUser(email);
+            UserManager.getInstance().setCurrentUser(user);
+        } catch (UserNotFoundException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 }

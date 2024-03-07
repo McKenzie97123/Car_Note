@@ -64,11 +64,12 @@ public class DBHelper extends SQLiteOpenHelper {
         String sql = "SELECT * FROM user WHERE email = ?";
         try (Cursor cursor = db.rawQuery(sql, new String[]{persistedEmail})) {
             if (cursor.moveToFirst()) {
+                @SuppressLint("Range") Integer id = cursor.getInt(cursor.getColumnIndex("id"));
                 @SuppressLint("Range") String email = cursor.getString(cursor.getColumnIndex("email"));
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
                 @SuppressLint("Range") String lastName = cursor.getString(cursor.getColumnIndex("lastName"));
                 @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex("password"));
-                return new User(email, name, lastName, password);
+                return new User(id ,email, name, lastName, password);
             } else {
                 throw new UserNotFoundException("User not found");
             }

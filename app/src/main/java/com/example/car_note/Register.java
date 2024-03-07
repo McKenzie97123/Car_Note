@@ -13,7 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Register extends AppCompatActivity {
-    DBHelper dbUser = new DBHelper(this);
+    DBHelper db = new DBHelper(this);
     PasswordHasher passwordHasher = new PasswordHasher();
     LoginRegisterValidator validator = new LoginRegisterValidator();
 
@@ -47,7 +47,7 @@ public class Register extends AppCompatActivity {
 
     private void insertUser(User user) {
         try {
-            dbUser.insertUser(user);
+            db.insertUser(user);
 
             Intent intent = new Intent(getApplicationContext(), CarPick.class);
             startActivity(intent);
@@ -88,7 +88,7 @@ public class Register extends AppCompatActivity {
         }
 
         String hashedUserPassword = passwordHasher.hashPassword(password);
-        User user = new User(email, name, lastName, hashedUserPassword);
+        User user = new User(null ,email, name, lastName, hashedUserPassword);
         insertUser(user);
     }
 
