@@ -7,10 +7,12 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -35,6 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "brand TEXT," +
                 "model TEXT," +
                 "color TEXT," +
+                "type TEXT," +
                 "plateNumber TEXT UNIQUE)"
         );
     }
@@ -46,20 +49,23 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    @SuppressLint("Recycle")
-    public void insertUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+    public void insertUser(User user) throws SQLException {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
 
-        values.put("email", user.getEmail());
-        values.put("name", user.getName());
-        values.put("lastName", user.getLastName());
-        values.put("password", user.getPassword());
+            values.put("email", user.getEmail());
+            values.put("name", user.getName());
+            values.put("lastName", user.getLastName());
+            values.put("password", user.getPassword());
 
-        db.insert("user", null, values);
+            db.insert("user", null, values);
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        }
     }
 
-    public User getUser(String persistedEmail) throws UserNotFoundException {
+    public User getUser(String persistedEmail) throws UserNotFoundException, SQLException {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM user WHERE email = ?";
         try (Cursor cursor = db.rawQuery(sql, new String[]{persistedEmail})) {
@@ -69,63 +75,74 @@ public class DBHelper extends SQLiteOpenHelper {
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
                 @SuppressLint("Range") String lastName = cursor.getString(cursor.getColumnIndex("lastName"));
                 @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex("password"));
-                return new User(id ,email, name, lastName, password);
+                return new User(id, email, name, lastName, password);
             } else {
                 throw new UserNotFoundException("User not found");
             }
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
         }
     }
 
-    public String loginUser(String persistedEmail) throws UserNotFoundException {
+    public String loginUser(String persistedEmail) throws UserNotFoundException, SQLException {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT password FROM USER WHERE email = ?";
-        try (Cursor cursor = db.rawQuery(sql, new String[]{persistedEmail}))
-        {
+        try (Cursor cursor = db.rawQuery(sql, new String[]{persistedEmail})) {
             if (cursor.moveToFirst()) {
                 @SuppressLint("Range") String hashedPassword = cursor.getString(cursor.getColumnIndex("password"));
                 return hashedPassword;
             } else {
                 throw new UserNotFoundException("User not found");
             }
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
         }
     }
 
-    public void insertCar(Car car, int userId){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+    public void insertCar(Car car, int userId) throws SQLException {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
 
-        values.put("userId", userId);
-        values.put("brand", car.getBrand());
-        values.put("model", car.getModel());
-        values.put("color", car.getColor());
-        values.put("plateNumber", car.getPlateNumber());
+            values.put("userId", userId);
+            values.put("brand", car.getBrand());
+            values.put("model", car.getModel());
+            values.put("color", car.getColor());
+            values.put("plateNumber", car.getPlateNumber());
+            values.put("type", car.getType());
 
-        db.insert("car", null, values);
+            db.insert("car", null, values);
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        }
     }
 
-    public Map<Integer, List<Car>> getListOfCars(int userId) throws UserNotFoundException {
+    public List<Car> getListOfCars(int userId) throws UserNotFoundException, SQLException {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM car WHERE userid = ?";
-        Map<Integer, List<Car>> cars = new HashMap<>();
+        List<Car> cars = new ArrayList<>();
         try (Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId)})) {
             if (cursor.moveToFirst()) {
                 do {
-                    @SuppressLint("Range") int carId = cursor.getInt(cursor.getColumnIndex("id"));
+                    @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
                     @SuppressLint("Range") String carBrand = cursor.getString(cursor.getColumnIndex("brand"));
                     @SuppressLint("Range") String carModel = cursor.getString(cursor.getColumnIndex("model"));
                     @SuppressLint("Range") String carColor = cursor.getString(cursor.getColumnIndex("color"));
                     @SuppressLint("Range") String carPlateNumber = cursor.getString(cursor.getColumnIndex("plateNumber"));
-                    Car car = new Car(carId, carBrand, carModel, carColor, carPlateNumber);
+                    @SuppressLint("Range") String carType = cursor.getString(cursor.getColumnIndex("type"));
+                    Car car = new Car(id, userId, carBrand, carModel, carColor, carPlateNumber, carType);
 
-                    if (!cars.containsKey(carId)) {
-                        cars.put(carId, new ArrayList<>());
+                    if (car.getId() != null) {
+                        cars.add(id, car);
                     }
-                    Objects.requireNonNull(cars.get(carId)).add(car);
+
                 } while (cursor.moveToNext());
                 return cars;
             } else {
                 throw new UserNotFoundException("User not found");
             }
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
         }
     }
 }

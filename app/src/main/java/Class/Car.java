@@ -1,7 +1,17 @@
 package Class;
 
 public class Car {
-    private static final String[] BODY_TYPE = {"motorbike", "suv", "sedan", "coupe", "hatchback"};
+    public static final String[] BODY_TYPE = {
+            "suv",
+            "sedan",
+            "coupe",
+            "hatchback",
+            "bus",
+            "convertible",
+            "estate",
+            "van"
+    };
+    private Integer id = null;
     private int userId;
     private String brand;
     private String model;
@@ -11,6 +21,7 @@ public class Car {
 
 
     public Car(
+            Integer id,
             int userId,
             String brand,
             String model,
@@ -18,12 +29,16 @@ public class Car {
             String plateNumber,
             String type
     ) {
+        this.id = id;
         this.userId = userId;
         this.brand = brand;
         this.model = model;
         this.color = color;
         this.plateNumber = plateNumber;
         this.type = type;
+    }
+    public Integer getId() {
+        return this.id;
     }
 
     public int getUserId() {

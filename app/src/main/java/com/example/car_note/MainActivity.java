@@ -47,9 +47,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             } else {
                 Toast.makeText(this, "Wrong password", Toast.LENGTH_LONG).show();
+                return;
             }
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            return;
         }
 
         setCurrentUser(email);
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             User user = db.getUser(email);
             UserManager.getInstance().setCurrentUser(user);
-        } catch (UserNotFoundException e) {
+        } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }

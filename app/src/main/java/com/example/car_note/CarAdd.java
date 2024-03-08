@@ -7,13 +7,13 @@ import Service.CarAddValidator;
 import Service.UserManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class CarAdd extends AppCompatActivity {
-
+public class CarAdd extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+    private static final String[] VALID_TYPES = Car.BODY_TYPE;
+    private String type = "";
     CarAddValidator validator = new CarAddValidator();
     DBHelper db = new DBHelper(this);
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,17 @@ public class CarAdd extends AppCompatActivity {
         EditText color = findViewById(R.id.carAddColor);
         EditText plateNumber = findViewById(R.id.carAddPlateNumber);
 
+        Spinner spinner = findViewById(R.id.carAddSpinner);
+        spinner.setOnItemSelectedListener(this);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                VALID_TYPES
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
         Button addCar = findViewById(R.id.carAddButtonAddNewCar);
         Button back = findViewById(R.id.carAddButtonBack);
 
@@ -36,10 +47,20 @@ public class CarAdd extends AppCompatActivity {
             String carColor = color.getText().toString();
             String carPlateNumber = plateNumber.getText().toString();
 
-            addCar(currentUser.getId() ,carBrand, carModel, carColor, carPlateNumber);
+            addCar(currentUser.getId() ,carBrand, carModel, carColor, carPlateNumber, type);
         });
 
         back.setOnClickListener(v -> returnToCarPick());
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        type = VALID_TYPES[position];
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Auto-generated method stub
     }
 
     private void addCar(
@@ -47,12 +68,18 @@ public class CarAdd extends AppCompatActivity {
             String brand,
             String model,
             String color,
-            String plateNumber
+            String plateNumber,
+            String type
     ) {
         if (brand.isEmpty() || model.isEmpty() || color.isEmpty()
                 || plateNumber.isEmpty()) {
             Toast.makeText(this, "To add new car you need to fill " +
                     "up all presented text fields", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (type.isEmpty()) {
+            Toast.makeText(this, "Need to choose body type of your car", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -62,18 +89,17 @@ public class CarAdd extends AppCompatActivity {
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             return;
         }
-
-        Car car = new Car(userId, brand, model, color, plateNumber);
+        Car car = new Car(null, userId, brand, model, color, plateNumber, type);
         insertCar(car, userId);
     }
 
     private void insertCar(Car car, int userId) {
         try {
-            System.out.println(car.getBrand());
             db.insertCar(car, userId);
 
             Intent intent = new Intent(getApplicationContext(), CarPick.class);
             startActivity(intent);
+            Toast.makeText(this, "car has been added", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }

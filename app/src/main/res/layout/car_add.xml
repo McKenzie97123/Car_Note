@@ -60,14 +60,14 @@
             android:layout_marginEnd="80dp"
             android:autofillHints="plate number"
             tools:ignore="TextFields"/>
-    <AutoCompleteTextView
+    <Spinner
             android:layout_width="250dp"
             android:layout_height="48dp"
-            android:id="@+id/carAddDropDownList"
+            android:id="@+id/carAddSpinner"
             android:layout_marginTop="415dp"
             android:layout_marginStart="80dp"
             android:layout_marginEnd="80dp"
-            android:hint="@string/define_body_click"
+            android:prompt="@string/define_body_click"
             android:gravity="center"
             android:background="@drawable/list_view_border"
     />

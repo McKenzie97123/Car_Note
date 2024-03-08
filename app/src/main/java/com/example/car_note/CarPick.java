@@ -1,7 +1,10 @@
 package com.example.car_note;
 
+import Adapter.CarAdapter;
 import Class.Car;
+import Class.User;
 import Database.DBHelper;
+import Service.UserManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,24 +15,30 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
-import java.util.Map;
 
 public class CarPick extends AppCompatActivity {
     DBHelper db = new DBHelper(this);
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.car_pick);
 
-        ListView list = findViewById(R.id.userCarsListOfCars);
+        User currentUser = UserManager.getInstance().getCurrentUser();
 
-        try {
-            Map<Integer, List<Car>> carsFromDb = db.getListOfCars(1);
-        } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        ListView list = findViewById(R.id.carPickListOfCars);
+        Button pick = findViewById(R.id.carPickButtonPickCar);
+        Button add = findViewById(R.id.carPickButtonAddCar);
+
+        List<Car> cars = getListOfCars(currentUser.getId());
+        if (cars != null) {
+            if (cars.isEmpty()) {
+                Toast.makeText(this, "Try to add your first car !!!", Toast.LENGTH_LONG).show();
+            } else {
+                CarAdapter adapter = new CarAdapter(this, cars);
+                list.setAdapter(adapter);
+            }
+        } else {
+            Toast.makeText(this, "Error loading cars data", Toast.LENGTH_LONG).show();
         }
-        Button buttonChoose = findViewById(R.id.userCarsButtonChooseCar);
-        Button buttonAdd = findViewById(R.id.userCarsButtonAddCar);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -38,14 +47,21 @@ public class CarPick extends AppCompatActivity {
             }
         });
 
-        buttonChoose.setOnClickListener(new View.OnClickListener() {
-
+        pick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             }
         });
 
-        buttonAdd.setOnClickListener(v -> addCarLayout());
+        add.setOnClickListener(v -> addCarLayout());
+    }
+    private List<Car> getListOfCars(int userId) {
+        try {
+            return db.getListOfCars(userId);
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            return null;
+        }
     }
 
     private void addCarLayout(){
