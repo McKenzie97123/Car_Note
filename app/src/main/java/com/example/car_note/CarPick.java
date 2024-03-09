@@ -7,14 +7,12 @@ import Database.DBHelper;
 import Service.UserManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class CarPick extends AppCompatActivity {
     DBHelper db = new DBHelper(this);
@@ -28,34 +26,18 @@ public class CarPick extends AppCompatActivity {
         Button pick = findViewById(R.id.carPickButtonPickCar);
         Button add = findViewById(R.id.carPickButtonAddCar);
 
-        List<Car> cars = getListOfCars(currentUser.getId());
-        if (cars != null) {
-            if (cars.isEmpty()) {
-                Toast.makeText(this, "Try to add your first car !!!", Toast.LENGTH_LONG).show();
-            } else {
-                CarAdapter adapter = new CarAdapter(this, cars);
-                list.setAdapter(adapter);
-            }
+        ArrayList<Car> cars = getListOfCars(currentUser.getId());
+        if (cars == null || cars.isEmpty()) {
+            Toast.makeText(this, "Try to add your first car !!!", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "Error loading cars data", Toast.LENGTH_LONG).show();
+            CarAdapter carAdapter = new CarAdapter(getApplicationContext(), cars);
+            list.setAdapter(carAdapter);
         }
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
-
-        pick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
 
         add.setOnClickListener(v -> addCarLayout());
     }
-    private List<Car> getListOfCars(int userId) {
+
+    private ArrayList<Car> getListOfCars(int userId) {
         try {
             return db.getListOfCars(userId);
         } catch (Exception e) {
@@ -64,7 +46,7 @@ public class CarPick extends AppCompatActivity {
         }
     }
 
-    private void addCarLayout(){
+    private void addCarLayout() {
         Intent intent = new Intent(getApplicationContext(), CarAdd.class);
         startActivity(intent);
     }

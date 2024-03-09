@@ -1,39 +1,59 @@
 package Adapter;
 
 import Class.Car;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.car_note.R;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Objects;
 
-public class CarAdapter extends ArrayAdapter<Car> {
+public class CarAdapter extends BaseAdapter {
 
-    private Context Context;
-    private List<Car> Cars;
-
-    public CarAdapter(Context context, List<Car> cars) {
-        super(context, 0, cars);
-        Context = context;
-        Cars = cars;
+    Context context;
+    ArrayList<Car> cars;
+    LayoutInflater inflater;
+    public CarAdapter(Context context, ArrayList<Car> cars) {
+        this.context = context;
+        this.cars = cars;
+        inflater = LayoutInflater.from(context);
+    }
+    @Override
+    public int getCount() {
+        return cars.size();
     }
 
     @Override
+    public Object getItem(int position) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @SuppressLint({"ViewHolder", "InflateParams"})
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View listItem = convertView;
-        if (listItem == null) {
-            listItem = LayoutInflater.from(Context).inflate(R.layout.car_pick, parent, false);
-        }
+        convertView = inflater.inflate(R.layout.car_pick_list_view, null);
+        TextView Brand = convertView.findViewById(R.id.carPickParentTextViewBrand);
+        TextView Model = convertView.findViewById(R.id.carPickParentTextViewModel);
+        TextView Plate = convertView.findViewById(R.id.carPickParentTextViewPlate);
+        ImageView icon = convertView.findViewById(R.id.carPickParentImageViewIcon);
 
-        Car currentCar = Cars.get(position);
+        Brand.setText(cars.get(position).getBrand());
+        Model.setText(cars.get(position).getModel());
+        Plate.setText(cars.get(position).getPlateNumber());
 
-        TextView carId = listItem.findViewById(R.id.carPickListOfCars);
-        carId.setText(currentCar.getId());
+        icon.setImageResource(Objects.requireNonNull(Objects.requireNonNull(Car.BODY_TYPE_MAP.get(cars.get(position).getType()))));
 
-        return listItem;
+        return convertView;
     }
 }

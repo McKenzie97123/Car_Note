@@ -20,4 +20,5 @@
     <string name="type_yours_car_plate_number">type yours car plate number</string>
     <string name="turn_back">turn back</string>
     <string name="define_body_click"> define body (click)</string>
+    <string name="carpickparenticons">carPickParentIcons</string>
 </resources>

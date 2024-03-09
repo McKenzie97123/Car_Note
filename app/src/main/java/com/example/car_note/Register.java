@@ -90,6 +90,8 @@ public class Register extends AppCompatActivity {
         String hashedUserPassword = passwordHasher.hashPassword(password);
         User user = new User(null ,email, name, lastName, hashedUserPassword);
         insertUser(user);
+        Toast.makeText(this, "User has been added, login again now !", Toast.LENGTH_LONG).show();
+        loginLayout();
     }
 
     private void loginLayout() {

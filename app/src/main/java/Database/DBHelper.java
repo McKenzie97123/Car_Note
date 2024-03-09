@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -50,19 +49,15 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void insertUser(User user) throws SQLException {
-        try {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues values = new ContentValues();
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
 
-            values.put("email", user.getEmail());
-            values.put("name", user.getName());
-            values.put("lastName", user.getLastName());
-            values.put("password", user.getPassword());
+        values.put("email", user.getEmail());
+        values.put("name", user.getName());
+        values.put("lastName", user.getLastName());
+        values.put("password", user.getPassword());
 
-            db.insert("user", null, values);
-        } catch (SQLException e) {
-            throw new SQLException(e.getMessage());
-        }
+        db.insert("user", null, values);
     }
 
     public User getUser(String persistedEmail) throws UserNotFoundException, SQLException {
@@ -117,11 +112,11 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<Car> getListOfCars(int userId) throws UserNotFoundException, SQLException {
+    public ArrayList<Car> getListOfCars(int userId) throws SQLException {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM car WHERE userid = ?";
-        List<Car> cars = new ArrayList<>();
         try (Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId)})) {
+            ArrayList<Car> cars = new ArrayList<>();
             if (cursor.moveToFirst()) {
                 do {
                     @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
@@ -133,13 +128,13 @@ public class DBHelper extends SQLiteOpenHelper {
                     Car car = new Car(id, userId, carBrand, carModel, carColor, carPlateNumber, carType);
 
                     if (car.getId() != null) {
-                        cars.add(id, car);
+                        cars.add(car);
                     }
 
                 } while (cursor.moveToNext());
                 return cars;
             } else {
-                throw new UserNotFoundException("User not found");
+                return null;
             }
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
