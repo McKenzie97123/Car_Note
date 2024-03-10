@@ -43,14 +43,14 @@ public class CarAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.car_pick_list_view, null);
-        TextView Brand = convertView.findViewById(R.id.carPickParentTextViewBrand);
-        TextView Model = convertView.findViewById(R.id.carPickParentTextViewModel);
-        TextView Plate = convertView.findViewById(R.id.carPickParentTextViewPlate);
+        TextView brand = convertView.findViewById(R.id.carPickParentTextViewBrand);
+        TextView model = convertView.findViewById(R.id.carPickParentTextViewModel);
+        TextView plate = convertView.findViewById(R.id.carPickParentTextViewPlate);
         ImageView icon = convertView.findViewById(R.id.carPickParentImageViewIcon);
 
-        Brand.setText(cars.get(position).getBrand());
-        Model.setText(cars.get(position).getModel());
-        Plate.setText(cars.get(position).getPlateNumber());
+        brand.setText(cars.get(position).getBrand());
+        model.setText(cars.get(position).getModel());
+        plate.setText(cars.get(position).getPlateNumber());
 
         icon.setImageResource(Objects.requireNonNull(Objects.requireNonNull(Car.BODY_TYPE_MAP.get(cars.get(position).getType()))));
 
