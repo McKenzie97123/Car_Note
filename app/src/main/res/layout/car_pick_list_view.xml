@@ -3,7 +3,8 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="horizontal"
-              android:padding="10dp">
+              android:padding="10dp"
+              android:background="@drawable/rounded_corner_text_edit">
     <ImageView
             android:id="@+id/carPickParentImageViewIcon"
             android:layout_width="50dp"
@@ -17,26 +18,26 @@
 
         <TextView
                 android:id="@+id/carPickParentTextViewBrand"
+                android:textSize="15sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text=""/>
+                android:gravity="center"/>
 
         <TextView
                 android:id="@+id/carPickParentTextViewModel"
+                android:textSize="15sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text=""/>
+                android:gravity="center"/>
 
         <TextView
                 android:id="@+id/carPickParentTextViewPlate"
+                android:textSize="15sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text=""/>
+                android:gravity="center"/>
     </LinearLayout>
 </LinearLayout>

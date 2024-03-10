@@ -7,84 +7,90 @@
                 android:background="@color/white"
                 android:id="@+id/registerLayout">
     <ImageView
-            android:layout_width="332dp"
-            android:layout_height="304dp" app:srcCompat="@drawable/carnote_sec_240"
             android:id="@+id/registerIcon"
-            android:layout_marginTop="17dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
+            app:srcCompat="@drawable/carnote_sec_240"
+            android:layout_width="340dp"
+            android:layout_height="320dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:contentDescription="@string/register_logo"/>
     <EditText
+            android:id="@+id/registerEmail"
             android:layout_width="250dp"
             android:layout_height="48dp"
             android:inputType="textEmailAddress"
             android:hint="@string/type_your_email"
+            android:textSize="16sp"
             android:gravity="center"
-            android:id="@+id/registerEmail"
             android:layout_marginTop="160dp"
             android:layout_marginStart="80dp"
             android:layout_marginEnd="80dp"
-            android:autofillHints="emailAddress"
-            tools:ignore="TextFields"/>
+            android:importantForAutofill="no"/>
     <EditText
+            android:id="@+id/registerName"
             android:layout_width="250dp"
             android:layout_height="48dp"
             android:inputType="text"
             android:hint="@string/type_your_name"
+            android:textSize="16sp"
             android:gravity="center"
-            android:id="@+id/registerName"
             android:layout_marginTop="225dp"
             android:layout_marginStart="80dp"
             android:layout_marginEnd="80dp"
-            android:autofillHints="name"/>
+            android:importantForAutofill="no"/>
     <EditText
+            android:id="@+id/registerLastName"
             android:layout_width="250dp"
             android:layout_height="48dp"
             android:inputType="text"
             android:hint="@string/type_your_last_name"
+            android:textSize="16sp"
             android:gravity="center"
-            android:id="@+id/registerLastName"
             android:layout_marginTop="290dp"
             android:layout_marginStart="80dp"
             android:layout_marginEnd="80dp"
-            android:autofillHints="last name"/>
+            android:importantForAutofill="no"/>
     <EditText
+            android:id="@+id/registerPasswordFirst"
             android:layout_width="250dp"
             android:layout_height="48dp"
             android:inputType="textPassword"
-            android:id="@+id/registerPasswordFirst"
+            android:hint="@string/type_your_password"
+            android:textSize="16sp"
+            android:gravity="center"
             android:layout_marginTop="355dp"
             android:layout_marginStart="80dp"
             android:layout_marginEnd="80dp"
-            android:hint="@string/type_your_password"
-            android:gravity="center"
-            android:autofillHints="password"/>
+            android:importantForAutofill="no"/>
     <EditText
+            android:id="@+id/registerPasswordSecond"
             android:layout_width="250dp"
             android:layout_height="48dp"
             android:inputType="textPassword"
-            android:id="@+id/registerPasswordSecond"
+            android:hint="@string/repeat_your_password"
+            android:textSize="16sp"
+            android:gravity="center"
             android:layout_marginTop="420dp"
             android:layout_marginStart="80dp"
             android:layout_marginEnd="80dp"
-            android:hint="@string/repeat_your_password"
-            android:gravity="center"
-            android:autofillHints="repeat password"/>
+            android:importantForAutofill="no"/>
     <Button
+            android:id="@+id/registerButtonRegister"
             android:text="@string/register"
+            android:textSize="18sp"
             android:layout_width="350dp"
             android:layout_height="48dp"
-            android:id="@+id/registerButtonRegister"
             android:layout_marginTop="520dp"
             android:layout_marginStart="60dp"
             android:layout_marginEnd="60dp"/>
     <Button
-            android:text="@string/i_already_have_account"
-            android:textSize="12sp"
-            android:layout_width="200dp"
-            android:layout_height="48dp"
             android:id="@+id/registerButtonLogin"
+            android:text="@string/i_already_have_account"
+            android:textSize="16sp"
+            android:layout_width="220dp"
+            android:layout_height="66dp"
             android:layout_marginTop="580dp"
-            android:layout_marginStart="110dp"
-            android:layout_marginEnd="110dp"/>
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"/>
 </RelativeLayout>
