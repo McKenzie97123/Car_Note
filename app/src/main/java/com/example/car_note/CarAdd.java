@@ -32,7 +32,7 @@ public class CarAdd extends AppCompatActivity implements AdapterView.OnItemSelec
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
-                android.R.layout.simple_spinner_item,
+                R.layout.car_add_custom_item,
                 VALID_TYPES
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

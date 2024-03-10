@@ -64,13 +64,12 @@
             android:layout_width="250dp"
             android:layout_height="48dp"
             android:id="@+id/carAddSpinner"
-            android:layout_marginTop="415dp"
+            android:layout_marginTop="425dp"
             android:layout_marginStart="80dp"
             android:layout_marginEnd="80dp"
             android:prompt="@string/define_body_click"
             android:gravity="center"
-            android:background="@drawable/list_view_border"
-    />
+            android:background="@drawable/list_view_border"/>
     <Button
             android:text="@string/add_new_car"
             android:layout_width="350dp"
