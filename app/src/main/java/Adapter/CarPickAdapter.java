@@ -14,12 +14,12 @@ import com.example.car_note.R;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class CarAdapter extends BaseAdapter {
+public class CarPickAdapter extends BaseAdapter {
 
     Context context;
     ArrayList<Car> cars;
     LayoutInflater inflater;
-    public CarAdapter(Context context, ArrayList<Car> cars) {
+    public CarPickAdapter(Context context, ArrayList<Car> cars) {
         this.context = context;
         this.cars = cars;
         inflater = LayoutInflater.from(context);

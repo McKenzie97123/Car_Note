@@ -1,5 +1,6 @@
 package com.example.car_note;
 
+import Adapter.CarAddAdapter;
 import Class.Car;
 import Class.User;
 import Database.DBHelper;
@@ -11,11 +12,12 @@ import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class CarAdd extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class CarAdd extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static final String[] VALID_TYPES = Car.BODY_TYPE;
     private String type = "";
     CarAddValidator validator = new CarAddValidator();
     DBHelper db = new DBHelper(this);
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.car_add);
@@ -30,13 +32,12 @@ public class CarAdd extends AppCompatActivity implements AdapterView.OnItemSelec
         Spinner spinner = findViewById(R.id.carAddSpinner);
         spinner.setOnItemSelectedListener(this);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+        CarAddAdapter carAddAdapter = new CarAddAdapter(
                 this,
-                R.layout.car_add_custom_item,
+                android.R.layout.simple_spinner_item,
                 VALID_TYPES
         );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(carAddAdapter);
 
         Button addCar = findViewById(R.id.carAddButtonAddNewCar);
         Button back = findViewById(R.id.carAddButtonBack);
@@ -47,7 +48,7 @@ public class CarAdd extends AppCompatActivity implements AdapterView.OnItemSelec
             String carColor = color.getText().toString();
             String carPlateNumber = plateNumber.getText().toString();
 
-            addCar(currentUser.getId() ,carBrand, carModel, carColor, carPlateNumber, type);
+            addCar(currentUser.getId(), carBrand, carModel, carColor, carPlateNumber, type);
         });
 
         back.setOnClickListener(v -> returnToCarPick());
@@ -83,7 +84,7 @@ public class CarAdd extends AppCompatActivity implements AdapterView.OnItemSelec
             return;
         }
 
-        if (!validator.plateNumberValidate(plateNumber)){
+        if (!validator.plateNumberValidate(plateNumber)) {
             String message = "Persisted plate number is invalid. The first character must be a letter," +
                     " and the maximum length of the plate is 7 characters";
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();

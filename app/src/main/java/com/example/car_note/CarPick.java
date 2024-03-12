@@ -1,6 +1,6 @@
 package com.example.car_note;
 
-import Adapter.CarAdapter;
+import Adapter.CarPickAdapter;
 import Class.Car;
 import Class.User;
 import Database.DBHelper;
@@ -30,8 +30,8 @@ public class CarPick extends AppCompatActivity {
         if (cars == null || cars.isEmpty()) {
             Toast.makeText(this, "Try to add your first car !!!", Toast.LENGTH_LONG).show();
         } else {
-            CarAdapter carAdapter = new CarAdapter(getApplicationContext(), cars);
-            list.setAdapter(carAdapter);
+            CarPickAdapter carPickAdapter = new CarPickAdapter(getApplicationContext(), cars);
+            list.setAdapter(carPickAdapter);
         }
 
         add.setOnClickListener(v -> addCarLayout());
