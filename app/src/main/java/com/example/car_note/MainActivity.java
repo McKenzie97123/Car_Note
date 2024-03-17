@@ -1,10 +1,9 @@
 package com.example.car_note;
 
 import Database.DBHelper;
-import Exception.UserNotFoundException;
 import Class.User;
 import Service.PasswordHasher;
-import Service.UserManager;
+import Manager.UserManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;

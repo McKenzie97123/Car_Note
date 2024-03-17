@@ -6,14 +6,14 @@
     <string name="register">register</string>
     <string name="repeat_your_password">repeat your password</string>
     <string name="type_your_last_name">type your last name</string>
-    <string name="i_already_have_account">I already have account</string>
+    <string name="i_already_have_account">i already have account</string>
     <string name="type_your_name">type your name</string>
     <string name="register_logo">register logo</string>
     <string name="type_your_password">type your password</string>
     <string name="Im_choosing_this">I\'m choosing this</string>
     <string name="Please_select_the_vehicle_you_are_using">
         Please select the vehicle you are using</string>
-    <string name="add_new_car">Add new car</string>
+    <string name="add_new_car">add new car</string>
     <string name="type_yours_car_brand">type yours car brand</string>
     <string name="type_yours_car_model">type yours car model</string>
     <string name="type_yours_car_color">type yours car color</string>
@@ -22,4 +22,10 @@
     <string name="define_body_click"> define body (click)</string>
     <string name="carpickparenticons">carPickParentIcons</string>
     <string name="login_picture">login picture</string>
+    <string name="main_dashboard_image">Main dashboard image</string>
+    <string name="add_new">add new</string>
+    <string name="edit">edit</string>
+    <string name="delete">delete</string>
+    <string name="choose_category">choose category</string>
+    <string name="generate_pdf_file">generate pdf file</string>
 </resources>

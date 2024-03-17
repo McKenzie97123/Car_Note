@@ -1,4 +1,4 @@
-package Service;
+package Manager;
 
 import Class.User;
 public class UserManager {

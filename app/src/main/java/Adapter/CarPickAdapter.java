@@ -30,7 +30,7 @@ public class CarPickAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Car getItem(int position) {
         return null;
     }
 

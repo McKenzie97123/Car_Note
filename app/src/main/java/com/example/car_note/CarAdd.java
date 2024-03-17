@@ -5,7 +5,7 @@ import Class.Car;
 import Class.User;
 import Database.DBHelper;
 import Service.CarAddValidator;
-import Service.UserManager;
+import Manager.UserManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;

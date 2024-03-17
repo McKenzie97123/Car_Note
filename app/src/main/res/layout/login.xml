@@ -13,7 +13,7 @@
             android:layout_marginTop="-20dp"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
-            android:background="@drawable/carnote360"
+            android:background="@drawable/carnote_login_360"
             android:contentDescription="@string/login_picture"/>
     <EditText
             android:id="@+id/loginUserEmail"

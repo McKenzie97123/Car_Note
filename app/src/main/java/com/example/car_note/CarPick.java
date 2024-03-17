@@ -4,7 +4,8 @@ import Adapter.CarPickAdapter;
 import Class.Car;
 import Class.User;
 import Database.DBHelper;
-import Service.UserManager;
+import Manager.CarManager;
+import Manager.UserManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 
 public class CarPick extends AppCompatActivity {
     DBHelper db = new DBHelper(this);
+    CarPickAdapter carPickAdapter;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.car_pick);
@@ -30,11 +32,24 @@ public class CarPick extends AppCompatActivity {
         if (cars == null || cars.isEmpty()) {
             Toast.makeText(this, "Try to add your first car !!!", Toast.LENGTH_LONG).show();
         } else {
-            CarPickAdapter carPickAdapter = new CarPickAdapter(getApplicationContext(), cars);
+            carPickAdapter = new CarPickAdapter(getApplicationContext(), cars);
             list.setAdapter(carPickAdapter);
         }
 
         add.setOnClickListener(v -> addCarLayout());
+
+        pick.setOnClickListener(v -> {
+            int pickedCarId = list.getSelectedItemPosition();
+
+            if (pickedCarId < 0) {
+                Toast.makeText(this, "Try to add your first car !!!", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            Car pickedCar = carPickAdapter.getItem(pickedCarId);
+            CarManager.getInstance().setCurrentCar(pickedCar);
+            carMainDashboardLayout();
+        });
     }
 
     private ArrayList<Car> getListOfCars(int userId) {
@@ -48,6 +63,11 @@ public class CarPick extends AppCompatActivity {
 
     private void addCarLayout() {
         Intent intent = new Intent(getApplicationContext(), CarAdd.class);
+        startActivity(intent);
+    }
+
+    private void carMainDashboardLayout() {
+        Intent intent = new Intent(getApplicationContext(), CarMainDashboard.class);
         startActivity(intent);
     }
 }
