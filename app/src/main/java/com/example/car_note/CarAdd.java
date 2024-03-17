@@ -4,17 +4,15 @@ import Adapter.CarAddAdapter;
 import Class.Car;
 import Class.User;
 import Database.DBHelper;
-import Service.CarAddValidator;
 import Manager.UserManager;
+import Service.CarAddValidator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class CarAdd extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class CarAdd extends AppCompatActivity {
     private static final String[] VALID_TYPES = Car.BODY_TYPE;
-    private String type = "";
     CarAddValidator validator = new CarAddValidator();
     DBHelper db = new DBHelper(this);
 
@@ -30,8 +28,6 @@ public class CarAdd extends AppCompatActivity implements AdapterView.OnItemSelec
         EditText plateNumber = findViewById(R.id.carAddPlateNumber);
 
         Spinner spinner = findViewById(R.id.carAddSpinner);
-        spinner.setOnItemSelectedListener(this);
-
         CarAddAdapter carAddAdapter = new CarAddAdapter(
                 this,
                 android.R.layout.simple_spinner_item,
@@ -47,21 +43,13 @@ public class CarAdd extends AppCompatActivity implements AdapterView.OnItemSelec
             String carModel = model.getText().toString();
             String carColor = color.getText().toString();
             String carPlateNumber = plateNumber.getText().toString();
+            int carTypeId = (int) spinner.getSelectedItemId();
+            String carType = VALID_TYPES[carTypeId];
 
-            addCar(currentUser.getId(), carBrand, carModel, carColor, carPlateNumber, type);
+            addCar(currentUser.getId(), carBrand, carModel, carColor, carPlateNumber, carType);
         });
 
         back.setOnClickListener(v -> returnToCarPick());
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        type = VALID_TYPES[position];
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Auto-generated method stub
     }
 
     private void addCar(
@@ -98,9 +86,8 @@ public class CarAdd extends AppCompatActivity implements AdapterView.OnItemSelec
         try {
             db.insertCar(car, userId);
 
-            Intent intent = new Intent(getApplicationContext(), CarPick.class);
-            startActivity(intent);
             Toast.makeText(this, "car has been added", Toast.LENGTH_LONG).show();
+            returnToCarPick();
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }

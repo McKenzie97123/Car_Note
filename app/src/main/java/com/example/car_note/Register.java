@@ -95,7 +95,7 @@ public class Register extends AppCompatActivity {
     }
 
     private void loginLayout() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), Login.class);
         startActivity(intent);
     }
 }

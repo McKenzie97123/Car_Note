@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
     PasswordHasher passwordHasher = new PasswordHasher();
     DBHelper db;
 

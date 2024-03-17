@@ -18,6 +18,8 @@ import java.util.ArrayList;
 public class CarPick extends AppCompatActivity {
     DBHelper db = new DBHelper(this);
     CarPickAdapter carPickAdapter;
+    ArrayList<Car> cars;
+    int pickedCarId;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.car_pick);
@@ -28,7 +30,7 @@ public class CarPick extends AppCompatActivity {
         Button pick = findViewById(R.id.carPickButtonPickCar);
         Button add = findViewById(R.id.carPickButtonAddCar);
 
-        ArrayList<Car> cars = getListOfCars(currentUser.getId());
+        cars = getListOfCars(currentUser.getId());
         if (cars == null || cars.isEmpty()) {
             Toast.makeText(this, "Try to add your first car !!!", Toast.LENGTH_LONG).show();
         } else {
@@ -36,20 +38,19 @@ public class CarPick extends AppCompatActivity {
             list.setAdapter(carPickAdapter);
         }
 
-        add.setOnClickListener(v -> addCarLayout());
+        list.setOnItemClickListener((adapterView, view, position, id) -> pickedCarId = position);
 
         pick.setOnClickListener(v -> {
-            int pickedCarId = list.getSelectedItemPosition();
-
             if (pickedCarId < 0) {
-                Toast.makeText(this, "Try to add your first car !!!", Toast.LENGTH_LONG).show();
-                return;
+                Toast.makeText(this, "Pick car firstly !", Toast.LENGTH_LONG).show();
+            } else {
+                Car pickedCar = cars.get(pickedCarId);
+                CarManager.getInstance().setCurrentCar(pickedCar);
+                carMainDashboardLayout();
             }
-
-            Car pickedCar = carPickAdapter.getItem(pickedCarId);
-            CarManager.getInstance().setCurrentCar(pickedCar);
-            carMainDashboardLayout();
         });
+
+        add.setOnClickListener(v -> addCarLayout());
     }
 
     private ArrayList<Car> getListOfCars(int userId) {
