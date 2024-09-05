@@ -3,7 +3,7 @@ package com.example.car_note;
 import Adapter.CarAddAdapter;
 import Class.Car;
 import Class.User;
-import Database.DBHelper;
+import Database.Database;
 import Manager.UserManager;
 import Service.CarAddValidator;
 import android.content.Intent;
@@ -12,9 +12,9 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CarAdd extends AppCompatActivity {
-    private static final String[] VALID_TYPES = Car.BODY_TYPE;
+    private static final String[] VALID_TYPES = Car.BODY_TYPES;
     CarAddValidator validator = new CarAddValidator();
-    DBHelper db = new DBHelper(this);
+    Database db = new Database(this);
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +30,6 @@ public class CarAdd extends AppCompatActivity {
         Spinner spinner = findViewById(R.id.carAddSpinner);
         CarAddAdapter carAddAdapter = new CarAddAdapter(
                 this,
-                android.R.layout.simple_spinner_item,
                 VALID_TYPES
         );
         spinner.setAdapter(carAddAdapter);

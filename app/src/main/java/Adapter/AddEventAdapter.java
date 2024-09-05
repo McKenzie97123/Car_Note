@@ -9,26 +9,26 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.example.car_note.R;
 
+import java.util.ArrayList;
 
-public class CarAddAdapter extends BaseAdapter {
+public class AddEventAdapter extends BaseAdapter {
 
     Context context;
-    String[] types;
+    ArrayList<String> types;
     LayoutInflater inflater;
-
-    public CarAddAdapter(Context context, String[] types) {
+    public AddEventAdapter(Context context, ArrayList<String> events) {
         this.context = context;
-        this.types = types;
+        this.types = events;
         inflater = LayoutInflater.from(context);
     }
     @Override
     public int getCount() {
-        return types.length;
+        return types.size();
     }
 
     @Override
     public String getItem(int position) {
-        return types[position];
+        return types.get(position);
     }
 
     @Override
@@ -36,13 +36,13 @@ public class CarAddAdapter extends BaseAdapter {
         return position;
     }
 
-
     @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = inflater.inflate(R.layout.car_add_custom_item, null);
-        TextView type = convertView.findViewById(R.id.carAddType);
-        type.setText(types[position]);
+        convertView = inflater.inflate(R.layout.add_event_custom_item, null);
+        TextView title = convertView.findViewById(R.id.carAddType);
+
+        title.setText(types.get(position));
 
         return convertView;
     }

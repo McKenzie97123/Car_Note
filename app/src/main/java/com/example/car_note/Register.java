@@ -1,7 +1,7 @@
 package com.example.car_note;
 
 import Class.User;
-import Database.DBHelper;
+import Database.Database;
 import Service.LoginRegisterValidator;
 import Service.PasswordHasher;
 import android.annotation.SuppressLint;
@@ -13,7 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Register extends AppCompatActivity {
-    DBHelper db = new DBHelper(this);
+    Database db = new Database(this);
     PasswordHasher passwordHasher = new PasswordHasher();
     LoginRegisterValidator validator = new LoginRegisterValidator();
 

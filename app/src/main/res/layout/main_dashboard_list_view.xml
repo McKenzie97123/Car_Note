@@ -2,23 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:padding="8dp"
+              android:orientation="vertical"
+              android:padding="12dp"
               android:background="@drawable/car_pick_highlighter">
-    <ImageView
-            android:id="@+id/carPickParentImageViewIcon"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="10dp"
-            android:contentDescription="@string/carpickparenticons"/>
+
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="14dp">
+            android:padding="6dp">
 
         <TextView
-                android:id="@+id/carPickParentTextViewBrand"
+                android:id="@+id/mainDashboardParentTextViewTitle"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:layout_width="0dp"
@@ -27,7 +22,31 @@
                 android:gravity="center"/>
 
         <TextView
-                android:id="@+id/carPickParentTextViewModel"
+                android:id="@+id/mainDashboardParentTextViewCategory"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"/>
+        <TextView
+                android:id="@+id/mainDashboardParentTextViewDate"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="6dp">
+
+        <TextView
+                android:id="@+id/mainDashboardParentTextViewDescription"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:layout_width="0dp"
@@ -35,14 +54,6 @@
                 android:layout_weight="1"
                 android:gravity="center"/>
 
-        <TextView
-                android:id="@+id/carPickParentTextViewPlate"
-                android:textSize="15sp"
-                android:textColor="@color/black"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"/>
     </LinearLayout>
 </LinearLayout>
 

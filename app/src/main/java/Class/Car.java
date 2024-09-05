@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Car {
-    public static final String[] BODY_TYPE = {
+    public static final String[] BODY_TYPES = {
             "suv",
             "sedan",
             "coupe",
@@ -31,20 +31,20 @@ public class Car {
     };
 
     public static final Map<String, Integer> BODY_TYPE_MAP = new HashMap<String, Integer>() {{
-        put(BODY_TYPE[0], BODY_TYPE_ICONS[0]);
-        put(BODY_TYPE[1], BODY_TYPE_ICONS[1]);
-        put(BODY_TYPE[2], BODY_TYPE_ICONS[2]);
-        put(BODY_TYPE[3], BODY_TYPE_ICONS[3]);
-        put(BODY_TYPE[4], BODY_TYPE_ICONS[4]);
-        put(BODY_TYPE[5], BODY_TYPE_ICONS[5]);
-        put(BODY_TYPE[6], BODY_TYPE_ICONS[6]);
-        put(BODY_TYPE[7], BODY_TYPE_ICONS[7]);
-        put(BODY_TYPE[8], BODY_TYPE_ICONS[8]);
+        put(BODY_TYPES[0], BODY_TYPE_ICONS[0]);
+        put(BODY_TYPES[1], BODY_TYPE_ICONS[1]);
+        put(BODY_TYPES[2], BODY_TYPE_ICONS[2]);
+        put(BODY_TYPES[3], BODY_TYPE_ICONS[3]);
+        put(BODY_TYPES[4], BODY_TYPE_ICONS[4]);
+        put(BODY_TYPES[5], BODY_TYPE_ICONS[5]);
+        put(BODY_TYPES[6], BODY_TYPE_ICONS[6]);
+        put(BODY_TYPES[7], BODY_TYPE_ICONS[7]);
+        put(BODY_TYPES[8], BODY_TYPE_ICONS[8]);
     }};
 
 
     private Integer id = null;
-    private int userId;
+    private Integer userId = null;
     private String brand;
     private String model;
     private String color;
@@ -54,7 +54,7 @@ public class Car {
 
     public Car(
             Integer id,
-            int userId,
+            Integer userId,
             String brand,
             String model,
             String color,
@@ -74,7 +74,7 @@ public class Car {
         return this.id;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return this.userId;
     }
 

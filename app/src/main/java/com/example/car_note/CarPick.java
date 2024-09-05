@@ -3,7 +3,7 @@ package com.example.car_note;
 import Adapter.CarPickAdapter;
 import Class.Car;
 import Class.User;
-import Database.DBHelper;
+import Database.Database;
 import Manager.CarManager;
 import Manager.UserManager;
 import android.content.Intent;
@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 
 public class CarPick extends AppCompatActivity {
-    DBHelper db = new DBHelper(this);
+    Database db = new Database(this);
     CarPickAdapter carPickAdapter;
     ArrayList<Car> cars;
     int pickedCarId;
@@ -53,7 +53,7 @@ public class CarPick extends AppCompatActivity {
         add.setOnClickListener(v -> addCarLayout());
     }
 
-    private ArrayList<Car> getListOfCars(int userId) {
+    private ArrayList<Car> getListOfCars(Integer userId) {
         try {
             return db.getListOfCars(userId);
         } catch (Exception e) {

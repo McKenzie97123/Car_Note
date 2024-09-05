@@ -6,7 +6,7 @@
                 android:background="@color/white"
                 android:id="@+id/carAddLayout">
     <ImageView
-            android:id="@+id/carMainDashboardIcon"
+            android:id="@+id/mainDashboardIcon"
             app:srcCompat="@drawable/carnote_main_dashboard_240"
             android:layout_width="332dp"
             android:layout_height="304dp"
@@ -15,7 +15,7 @@
             android:layout_marginEnd="40dp"
             android:contentDescription="@string/main_dashboard_image"/>
     <ImageView
-            android:id="@+id/carMainDashboardIconEvent"
+            android:id="@+id/mainDashboardIconEvent"
             app:srcCompat="@drawable/carnote_main_dashboard_event_240"
             android:layout_width="332dp"
             android:layout_height="304dp"
@@ -24,19 +24,20 @@
             android:layout_marginEnd="40dp"
             android:contentDescription="@string/main_dashboard_image"/>
     <ListView
-            android:id="@+id/carMainDashboardListView"
+            android:id="@+id/mainDashboardListOfEvents"
             android:padding="7dp"
             android:dividerHeight="8sp"
             android:divider="@android:color/transparent"
             android:clipToPadding="false"
+            android:choiceMode="singleChoice"
             android:listSelector="@color/white"
             android:layout_width="540dp"
-            android:layout_height="450dp"
-            android:layout_marginTop="80dp"
+            android:layout_height="440dp"
+            android:layout_marginTop="90dp"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"/>
     <Button
-            android:id="@+id/carMainDashboardButtonCreateEvent"
+            android:id="@+id/mainDashboardButtonCreateEvent"
             android:text="@string/add_new"
             android:textSize="16sp"
             android:layout_width="111dp"
@@ -44,7 +45,7 @@
             android:layout_marginTop="540dp"
             android:layout_marginStart="30dp"/>
     <Button
-            android:id="@+id/carMainDashboardButtonEditEvent"
+            android:id="@+id/mainDashboardButtonEditEvent"
             android:text="@string/edit"
             android:textSize="17sp"
             android:layout_width="111dp"
@@ -52,7 +53,7 @@
             android:layout_marginTop="540dp"
             android:layout_marginStart="151dp"/>
     <Button
-            android:id="@+id/carMainDashboardButtonDeleteEvent"
+            android:id="@+id/mainDashboardButtonDeleteEvent"
             android:text="@string/delete"
             android:textSize="17sp"
             android:layout_width="111dp"
@@ -60,7 +61,7 @@
             android:layout_marginTop="540dp"
             android:layout_marginStart="271dp"/>
     <Button
-            android:id="@+id/carMainDashboardButtonCarPick"
+            android:id="@+id/mainDashboardButtonGeneratePdf"
             android:text="@string/generate_pdf_file"
             android:textSize="17sp"
             android:layout_width="352dp"
@@ -68,30 +69,39 @@
             android:layout_marginTop="590dp"
             android:layout_marginStart="30dp"/>
     <TextView
-            android:id="@+id/carMainDashboardTextView"
+            android:id="@+id/mainDashboardTextView"
             android:text="@string/choose_category"
             android:textSize="23sp"
             android:textAllCaps="true"
             android:gravity="center_vertical"
             android:layout_width="212dp"
             android:layout_height="40dp"
-            android:layout_marginTop="680dp"
+            android:layout_marginTop="650dp"
             android:layout_marginStart="30dp"/>
     <Spinner
-            android:id="@+id/carMainDashboardSpinner"
+            android:id="@+id/mainDashboardSpinner"
             android:layout_width="122dp"
             android:layout_height="40dp"
-            android:layout_marginTop="680dp"
+            android:layout_marginTop="650dp"
             android:layout_marginStart="260dp"
             android:gravity="center"
             android:padding="8dp"
-            android:spinnerMode="dropdown"/>
+            android:spinnerMode="dialog"/>
     <Button
-            android:id="@+id/carMainDashboardButtonGeneratePdf"
-            android:text=""
+            android:id="@+id/mainDashboardButtonSortEvents"
+            android:text="@string/sort_events"
             android:textSize="17sp"
             android:layout_width="252dp"
             android:layout_height="48dp"
-            android:layout_marginTop="730dp"
+            android:layout_marginTop="700dp"
             android:layout_marginStart="80dp"/>
+    <Button
+            android:id="@+id/mainDashboardButtonBackToCarPick"
+            android:text="@string/get_back_to_car_pick"
+            android:textSize="17sp"
+            android:layout_width="212dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="760dp"
+            android:layout_marginStart="100dp"/>
+    
 </RelativeLayout>

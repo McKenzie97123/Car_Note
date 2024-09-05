@@ -1,6 +1,6 @@
 package com.example.car_note;
 
-import Database.DBHelper;
+import Database.Database;
 import Class.User;
 import Service.PasswordHasher;
 import Manager.UserManager;
@@ -13,14 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Login extends AppCompatActivity {
     PasswordHasher passwordHasher = new PasswordHasher();
-    DBHelper db;
+    Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        db = new DBHelper(this);
+        db = new Database(this);
 
         EditText email = findViewById(R.id.loginUserEmail);
         EditText password = findViewById(R.id.loginUserPass);

@@ -1,6 +1,7 @@
 package Database;
 
 import Class.Car;
+import Class.Event;
 import Class.User;
 import Exception.UserNotFoundException;
 import android.annotation.SuppressLint;
@@ -11,16 +12,21 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class DBHelper extends SQLiteOpenHelper {
+public class Database extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "carnote.db";
 
-    public DBHelper(Context context) {
+    public Database(Context context) {
         super(context, DB_NAME, null, 1);
     }
 
+    @SuppressLint("SimpleDateFormat")
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE user (" +
@@ -32,12 +38,21 @@ public class DBHelper extends SQLiteOpenHelper {
         );
         db.execSQL("CREATE TABLE car (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "userId INT," +
+                "userId INTEGER," +
                 "brand TEXT," +
                 "model TEXT," +
                 "color TEXT," +
                 "type TEXT," +
                 "plateNumber TEXT UNIQUE)"
+        );
+        db.execSQL("CREATE TABLE event (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "userId INTEGER," +
+                "carId INTEGER," +
+                "title TEXT," +
+                "description TEXT," +
+                "date DATETIME," +
+                "type TEXT)"
         );
     }
 
@@ -45,6 +60,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS user");
         db.execSQL("DROP TABLE IF EXISTS car");
+        db.execSQL("DROP TABLE IF EXISTS event");
         onCreate(db);
     }
 
@@ -136,6 +152,56 @@ public class DBHelper extends SQLiteOpenHelper {
             } else {
                 return null;
             }
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        }
+    }
+
+    public ArrayList<Event> getListOfEvents(int userId, int carId) throws SQLException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM event WHERE userId = ? AND carId = ?";
+        try (Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(carId)})) {
+            ArrayList<Event> events = new ArrayList<>();
+            if (cursor.moveToFirst()) {
+                do {
+                    @SuppressLint("Range") Integer id = cursor.getInt(cursor.getColumnIndex("id"));
+                    @SuppressLint("Range") String eventTitle = cursor.getString(cursor.getColumnIndex("title"));
+                    @SuppressLint("Range") String eventCategory = cursor.getString(cursor.getColumnIndex("category"));
+                    @SuppressLint("Range") String eventDateInString = cursor.getString(cursor.getColumnIndex("date"));
+                    @SuppressLint("Range") String eventDescription = cursor.getString(cursor.getColumnIndex("description"));
+
+                    Date eventDate = formatter.parse(eventDateInString);
+                    Event event = new Event(id, userId, carId, eventTitle, eventCategory, eventDate, eventDescription);
+
+                    if (event.getId() != null) {
+                        events.add(event);
+                    }
+
+                } while (cursor.moveToNext());
+                return events;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        } catch (ParseException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void insertEvent(Event event) throws SQLException {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+
+            values.put("userId", event.getUserId());
+            values.put("carId", event.getCarId());
+            values.put("title", event.getTitle());
+            values.put("description", event.getDescription());
+            values.put("date", event.getDate().toString());
+            values.put("type", event.getType());
+
+            db.insert("event", null, values);
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }

@@ -31,12 +31,12 @@ public class CarPickAdapter extends BaseAdapter {
 
     @Override
     public Car getItem(int position) {
-        return null;
+        return cars.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return cars.get(position).getId();
     }
 
     @SuppressLint({"ViewHolder", "InflateParams"})

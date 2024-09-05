@@ -28,4 +28,13 @@
     <string name="delete">delete</string>
     <string name="choose_category">choose category</string>
     <string name="generate_pdf_file">generate pdf file</string>
+    <string name="sort_events">sort events</string>
+    <string name="carmaindashboardicondescripton">carMainDashboardIconDescripton</string>
+    <string name="get_back_to_car_pick">get back to car pick</string>
+    <string name="add_new_event_icon">add new event icon</string>
+    <string name="type_your_event_title">type your event title</string>
+    <string name="describe_your_new_event">describe your new event</string>
+    <string name="add_new_event">add new event</string>
+    <string name="pick_type">pick type</string>
+    <string name="pick_body">pick body</string>
 </resources>
