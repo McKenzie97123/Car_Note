@@ -4,7 +4,6 @@
               android:orientation="horizontal"
               android:padding="5dp"
               android:background="@drawable/spinner_item_border">
-
     <TextView
             android:id="@+id/mainDashboardCategory"
             android:textAllCaps="true"

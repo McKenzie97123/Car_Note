@@ -19,7 +19,7 @@ public class CarPick extends AppCompatActivity {
     Database db = new Database(this);
     CarPickAdapter carPickAdapter;
     ArrayList<Car> cars;
-    int pickedCarId;
+    private int pickedCarId = -1;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.car_pick);

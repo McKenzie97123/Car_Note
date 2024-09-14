@@ -7,70 +7,49 @@
                 android:background="@color/white"
                 android:id="@+id/carAddLayout">
     <ImageView
-            android:id="@+id/carAddIcon"
-            app:srcCompat="@drawable/carnote_add_new_car_240"
+            android:id="@+id/eventEditIcon"
+            app:srcCompat="@drawable/carnote_edit_event_240"
             android:layout_width="332dp"
             android:layout_height="304dp"
             android:layout_marginTop="17dp"
             android:layout_marginStart="39dp"
-            android:contentDescription="@string/add_new_car"/>
+            android:contentDescription="@string/add_new_event_icon"/>
     <EditText
-            android:id="@+id/carAddBrand"
+            android:id="@+id/eventEditTitle"
             android:layout_width="250dp"
             android:layout_height="48dp"
-            android:inputType="textEmailAddress"
-            android:hint="@string/type_yours_car_brand"
+            android:inputType="text"
             android:gravity="center"
             android:layout_marginTop="160dp"
             android:layout_marginStart="80dp"
             android:autofillHints="brand"
             tools:ignore="TextFields"/>
     <EditText
-            android:id="@+id/carAddModel"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:inputType="text"
-            android:hint="@string/type_yours_car_model"
+            android:id="@+id/eventEditDescription"
+            android:layout_width="330dp"
+            android:layout_height="200dp"
+            android:background="@drawable/solid_border"
+            android:inputType="textMultiLine|textNoSuggestions"
             android:gravity="center"
             android:layout_marginTop="225dp"
-            android:layout_marginStart="80dp"
-            android:autofillHints="model"/>
-    <EditText
-            android:id="@+id/carAddColor"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:inputType="text"
-            android:hint="@string/type_yours_car_color"
-            android:gravity="center"
-            android:layout_marginTop="290dp"
-            android:layout_marginStart="80dp"
-            android:autofillHints="color"/>
-    <EditText
-            android:id="@+id/carAddPlateNumber"
-            android:layout_width="250dp"
-            android:layout_height="48dp"
-            android:inputType="text"
-            android:hint="@string/type_yours_car_plate_number"
-            android:gravity="center"
-            android:layout_marginTop="355dp"
-            android:layout_marginStart="80dp"
-            android:autofillHints="plate number"
-            tools:ignore="TextFields"/>
+            android:layout_marginStart="41dp"
+            android:autofillHints="model"
+            tools:ignore="LabelFor"/>
     <TextView
-            android:id="@+id/carAddTextView"
-            android:text="@string/pick_body"
+            android:id="@+id/eventEditTextView"
+            android:text="@string/pick_type"
             android:textSize="23sp"
             android:textAllCaps="true"
             android:gravity="center_vertical"
             android:layout_width="120dp"
             android:layout_height="39dp"
-            android:layout_marginTop="422dp"
+            android:layout_marginTop="450dp"
             android:layout_marginStart="40dp"/>
     <Spinner
-            android:id="@+id/carAddSpinner"
+            android:id="@+id/eventEditSpinner"
             android:layout_width="190dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="420dp"
+            android:layout_marginTop="450dp"
             android:layout_marginStart="180dp"
             android:gravity="center"
             android:padding="8dp"
@@ -79,19 +58,19 @@
             android:background="@drawable/solid_border"
             style="@style/Widget.AppCompat.DropDownItem.Spinner"/>
     <Button
-            android:id="@+id/carAddButtonAddNewCar"
-            android:text="@string/add_new_car"
+            android:id="@+id/eventEditButtonEditEvent"
+            android:text="@string/edit_picked_event"
             android:textSize="18sp"
             android:layout_width="300dp"
             android:layout_height="48dp"
-            android:layout_marginTop="500dp"
+            android:layout_marginTop="530dp"
             android:layout_marginStart="55dp"/>
     <Button
-            android:id="@+id/carAddButtonBack"
+            android:id="@+id/eventEditButtonBack"
             android:text="@string/turn_back"
             android:textSize="16sp"
             android:layout_width="200dp"
             android:layout_height="48dp"
-            android:layout_marginTop="580dp"
+            android:layout_marginTop="590dp"
             android:layout_marginStart="105dp"/>
 </RelativeLayout>

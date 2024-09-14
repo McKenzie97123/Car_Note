@@ -86,7 +86,10 @@
             android:layout_marginStart="260dp"
             android:gravity="center"
             android:padding="8dp"
-            android:spinnerMode="dialog"/>
+            android:spinnerMode="dialog"
+            android:background="@drawable/solid_border"
+            android:textAlignment="center"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"/>
     <Button
             android:id="@+id/mainDashboardButtonSortEvents"
             android:text="@string/sort_events"
@@ -101,7 +104,7 @@
             android:textSize="17sp"
             android:layout_width="212dp"
             android:layout_height="48dp"
-            android:layout_marginTop="760dp"
+            android:layout_marginTop="750dp"
             android:layout_marginStart="100dp"/>
     
 </RelativeLayout>

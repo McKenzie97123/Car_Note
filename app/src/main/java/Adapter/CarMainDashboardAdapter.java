@@ -43,13 +43,13 @@ public class CarMainDashboardAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = inflater.inflate(R.layout.main_dashboard_list_view, null);
         TextView title = convertView.findViewById(R.id.mainDashboardParentTextViewTitle);
-        TextView category = convertView.findViewById(R.id.mainDashboardParentTextViewCategory);
         TextView date = convertView.findViewById(R.id.mainDashboardParentTextViewDate);
+        TextView category = convertView.findViewById(R.id.mainDashboardParentTextViewType);
         TextView description = convertView.findViewById(R.id.mainDashboardParentTextViewDescription);
 
         title.setText(events.get(position).getTitle());
+        date.setText(String.valueOf(events.get(position).getDate()));
         category.setText(events.get(position).getType());
-        date.setText(events.get(position).getDate().toString());
         description.setText(events.get(position).getDescription());
 
         return convertView;

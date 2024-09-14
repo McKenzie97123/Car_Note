@@ -37,4 +37,9 @@
     <string name="add_new_event">add new event</string>
     <string name="pick_type">pick type</string>
     <string name="pick_body">pick body</string>
+    <string name="edit_picked_event">edit picked event</string>
+    <string name="add_new_picture">add new picture</string>
+    <string name="delete_picture">delete picture</string>
+    <string name="delete_icon">X</string>
+    <string name="make_picture">make picture</string>
 </resources>

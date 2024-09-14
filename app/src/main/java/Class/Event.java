@@ -1,6 +1,6 @@
 package Class;
 
-import java.util.Date;
+import java.util.ArrayList;
 
 public class Event {
     public static final String[] EVENT_TYPES = {
@@ -17,8 +17,9 @@ public class Event {
     private Integer carId;
     private String title;
     private String description;
-    private Date date;
+    private String date;
     private String type;
+    private ArrayList<Picture> picture = null;
 
 
     public Event(
@@ -27,8 +28,9 @@ public class Event {
             int carId,
             String title,
             String description,
-            Date date,
-            String type
+            String date,
+            String type,
+            ArrayList<Picture> picture
     ) {
         this.id = id;
         this.userId = userId;
@@ -37,6 +39,7 @@ public class Event {
         this.description = description;
         this.date = date;
         this.type = type;
+        this.picture = picture;
     }
 
     public Integer getId() {
@@ -59,7 +62,7 @@ public class Event {
         return description;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -67,4 +70,7 @@ public class Event {
         return type;
     }
 
+    public ArrayList<Picture> getPicture() {
+        return picture;
+    }
 }

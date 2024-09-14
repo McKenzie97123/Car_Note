@@ -2,6 +2,7 @@ package Database;
 
 import Class.Car;
 import Class.Event;
+import Class.Picture;
 import Class.User;
 import Exception.UserNotFoundException;
 import android.annotation.SuppressLint;
@@ -12,10 +13,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Database extends SQLiteOpenHelper {
 
@@ -27,6 +26,7 @@ public class Database extends SQLiteOpenHelper {
 
     @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE user (" +
@@ -51,8 +51,16 @@ public class Database extends SQLiteOpenHelper {
                 "carId INTEGER," +
                 "title TEXT," +
                 "description TEXT," +
-                "date DATETIME," +
+                "date TEXT," +
                 "type TEXT)"
+        );
+        db.execSQL("CREATE TABLE picture (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "EventId INTEGER," +
+                "name TEXT," +
+                "path TEXT," +
+                "format TEXT," +
+                "deleted INTEGER CHECK (deleted IN (0, 1)))"
         );
     }
 
@@ -61,6 +69,7 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS user");
         db.execSQL("DROP TABLE IF EXISTS car");
         db.execSQL("DROP TABLE IF EXISTS event");
+        db.execSQL("DROP TABLE IF EXISTS picture");
         onCreate(db);
     }
 
@@ -73,12 +82,20 @@ public class Database extends SQLiteOpenHelper {
         values.put("lastName", user.getLastName());
         values.put("password", user.getPassword());
 
-        db.insert("user", null, values);
+        try {
+            db.insert("user", null, values);
+
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        } finally {
+            db.close();
+        }
     }
 
     public User getUser(String persistedEmail) throws UserNotFoundException, SQLException {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM user WHERE email = ?";
+
         try (Cursor cursor = db.rawQuery(sql, new String[]{persistedEmail})) {
             if (cursor.moveToFirst()) {
                 @SuppressLint("Range") Integer id = cursor.getInt(cursor.getColumnIndex("id"));
@@ -92,12 +109,15 @@ public class Database extends SQLiteOpenHelper {
             }
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
+        } finally {
+            db.close();
         }
     }
 
     public String loginUser(String persistedEmail) throws UserNotFoundException, SQLException {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT password FROM USER WHERE email = ?";
+
         try (Cursor cursor = db.rawQuery(sql, new String[]{persistedEmail})) {
             if (cursor.moveToFirst()) {
                 @SuppressLint("Range") String hashedPassword = cursor.getString(cursor.getColumnIndex("password"));
@@ -107,22 +127,25 @@ public class Database extends SQLiteOpenHelper {
             }
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
+        } finally {
+            db.close();
         }
     }
 
     public void insertCar(Car car, int userId) throws SQLException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("userId", userId);
+        values.put("brand", car.getBrand());
+        values.put("model", car.getModel());
+        values.put("color", car.getColor());
+        values.put("plateNumber", car.getPlateNumber());
+        values.put("type", car.getType());
+
         try {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues values = new ContentValues();
-
-            values.put("userId", userId);
-            values.put("brand", car.getBrand());
-            values.put("model", car.getModel());
-            values.put("color", car.getColor());
-            values.put("plateNumber", car.getPlateNumber());
-            values.put("type", car.getType());
-
             db.insert("car", null, values);
+
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
@@ -154,24 +177,25 @@ public class Database extends SQLiteOpenHelper {
             }
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
+        } finally {
+            db.close();
         }
     }
 
     public ArrayList<Event> getListOfEvents(int userId, int carId) throws SQLException {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM event WHERE userId = ? AND carId = ?";
-        try (Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(carId)})) {
+        try (Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(userId), String.valueOf(carId)})) {
             ArrayList<Event> events = new ArrayList<>();
             if (cursor.moveToFirst()) {
                 do {
                     @SuppressLint("Range") Integer id = cursor.getInt(cursor.getColumnIndex("id"));
                     @SuppressLint("Range") String eventTitle = cursor.getString(cursor.getColumnIndex("title"));
-                    @SuppressLint("Range") String eventCategory = cursor.getString(cursor.getColumnIndex("category"));
-                    @SuppressLint("Range") String eventDateInString = cursor.getString(cursor.getColumnIndex("date"));
                     @SuppressLint("Range") String eventDescription = cursor.getString(cursor.getColumnIndex("description"));
+                    @SuppressLint("Range") String eventType = cursor.getString(cursor.getColumnIndex("type"));
+                    @SuppressLint("Range") String eventDateInString = cursor.getString(cursor.getColumnIndex("date"));
 
-                    Date eventDate = formatter.parse(eventDateInString);
-                    Event event = new Event(id, userId, carId, eventTitle, eventCategory, eventDate, eventDescription);
+                    Event event = new Event(id, userId, carId, eventTitle, eventDescription, eventDateInString, eventType, null);
 
                     if (event.getId() != null) {
                         events.add(event);
@@ -184,24 +208,131 @@ public class Database extends SQLiteOpenHelper {
             }
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        } catch (ParseException e) {
-            throw new RuntimeException(e.getMessage());
+        } finally {
+            db.close();
         }
     }
 
-    public void insertEvent(Event event) throws SQLException {
+    public int insertEvent(Event event) throws SQLException {
+        int eventId;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("userId", event.getUserId());
+        values.put("carId", event.getCarId());
+        values.put("title", event.getTitle());
+        values.put("description", event.getDescription());
+        values.put("date", event.getDate());
+        values.put("type", event.getType());
+
         try {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues values = new ContentValues();
+            eventId = (int) db.insert("event", null, values);
 
-            values.put("userId", event.getUserId());
-            values.put("carId", event.getCarId());
-            values.put("title", event.getTitle());
-            values.put("description", event.getDescription());
-            values.put("date", event.getDate().toString());
-            values.put("type", event.getType());
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        } finally {
+            db.close();
+        }
 
-            db.insert("event", null, values);
+        return eventId;
+    }
+
+    public Event getSingleEvent(int eventId) throws SQLException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM event WHERE eventId = ?";
+
+        try (Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(eventId)})) {
+            if (cursor.moveToFirst()) {
+                @SuppressLint("Range") Integer id = cursor.getInt(cursor.getColumnIndex("id"));
+                @SuppressLint("Range") int userId = cursor.getInt(cursor.getColumnIndex("userId"));
+                @SuppressLint("Range") int carId = cursor.getInt(cursor.getColumnIndex("carId"));
+                @SuppressLint("Range") String eventTitle = cursor.getString(cursor.getColumnIndex("title"));
+                @SuppressLint("Range") String eventDescription = cursor.getString(cursor.getColumnIndex("description"));
+                @SuppressLint("Range") String eventType = cursor.getString(cursor.getColumnIndex("type"));
+                @SuppressLint("Range") String eventDateInString = cursor.getString(cursor.getColumnIndex("date"));
+
+                return new Event(id, userId, carId, eventTitle, eventDescription, eventDateInString, eventType, null);
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        } finally {
+            db.close();
+        }
+    }
+
+    public void updateEvent(Event event) throws SQLException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("userId", event.getUserId());
+        values.put("carId", event.getCarId());
+        values.put("title", event.getTitle());
+        values.put("description", event.getDescription());
+        values.put("type", event.getType());
+        values.put("date", event.getDate());
+
+        String whereClause = "eventId = ?";
+        String[] queryArgs = new String[]{String.valueOf(event.getId())};
+
+        try {
+            db.update("event", values, whereClause, queryArgs);
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        }
+    }
+
+    public void deleteEvent(int eventId) throws SQLException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = "eventId = ?";
+        String[] queryArgs = new String[]{String.valueOf(eventId)};
+
+        try {
+            db.delete("event", whereClause, queryArgs);
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        }
+    }
+
+    public void insertPictures(ArrayList<Picture> pictures, int eventId) {
+        for (Picture picture : pictures) {
+            try {
+                insertPicture(picture, eventId);
+            } catch (SQLException e) {
+                throw new SQLException(e.getMessage());
+            }
+        }
+    }
+
+    public void insertPicture(Picture picture, int eventId) throws SQLException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("eventId", eventId);
+        values.put("name", picture.getName());
+        values.put("path", picture.getPath());
+        values.put("format", picture.getFormat());
+        values.put("deleted", 0);
+
+        try {
+            db.insert("picture", null, values);
+
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        } finally {
+            db.close();
+        }
+    }
+
+    public void deletePicture(int pictureId) throws SQLException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = "pictureId = ?";
+        String[] queryArgs = new String[]{String.valueOf(pictureId)};
+
+        try {
+            db.delete("event", whereClause, queryArgs);
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }

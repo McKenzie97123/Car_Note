@@ -1,9 +1,9 @@
 package com.example.car_note;
 
-import Class.Event;
-import Class.Car;
-import Class.User;
 import Adapter.CarMainDashboardAdapter;
+import Class.Car;
+import Class.Event;
+import Class.User;
 import Database.Database;
 import Manager.CarManager;
 import Manager.UserManager;
@@ -21,6 +21,7 @@ public class CarMainDashboard extends AppCompatActivity {
     Database db = new Database(this);
     ArrayList<Event> events;
     CarMainDashboardAdapter carMainDashboardAdapter;
+    private int pickedEventId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +40,6 @@ public class CarMainDashboard extends AppCompatActivity {
         Button sort = findViewById(R.id.mainDashboardButtonSortEvents);
 
         events = getListOfEvents(currentUser.getId(), currentCar.getId());
-
         if (events == null || events.isEmpty()) {
             Toast.makeText(this, "Try to add your first event !!!", Toast.LENGTH_LONG).show();
         } else {
@@ -47,10 +47,41 @@ public class CarMainDashboard extends AppCompatActivity {
             list.setAdapter(carMainDashboardAdapter);
         }
 
+        list.setOnItemClickListener((adapterView, view, position, id) -> pickedEventId = position);
+
         create.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), EventAdd.class);
             startActivity(intent);
         });
+
+        edit.setOnClickListener(v -> {
+            if (pickedEventId < 0) {
+                Toast.makeText(this, "Pick event to edit firstly !", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(getApplicationContext(), EventEdit.class);
+                intent.putExtra("pickedEventId", pickedEventId);
+                startActivity(intent);
+            }
+        });
+
+        delete.setOnClickListener(v -> {
+            if (pickedEventId < 0) {
+                deleteEvent(pickedEventId);
+                Toast.makeText(this, "Pick event to delete it !", Toast.LENGTH_LONG).show();
+            } else {
+                deleteEvent(pickedEventId);
+            }
+        });
+    }
+
+    private void deleteEvent(int pickedEventId)
+    {
+        try {
+            db.deleteEvent(pickedEventId);
+            Toast.makeText(this, "picked event has been deleted successfully", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     private ArrayList<Event> getListOfEvents(int userId, int carId)

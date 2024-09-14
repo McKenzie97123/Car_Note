@@ -28,8 +28,8 @@
     <EditText
             android:id="@+id/eventAddDescription"
             android:layout_width="330dp"
-            android:layout_height="200dp"
-            android:background="@drawable/event_text_field_border"
+            android:layout_height="150dp"
+            android:background="@drawable/solid_border"
             android:inputType="textMultiLine|textNoSuggestions"
             android:hint="@string/describe_your_new_event"
             android:gravity="center"
@@ -44,25 +44,67 @@
             android:gravity="center_vertical"
             android:layout_width="120dp"
             android:layout_height="39dp"
-            android:layout_marginTop="450dp"
+            android:layout_marginTop="383dp"
             android:layout_marginStart="40dp"/>
     <Spinner
-            android:id="@+id/eventAddSpinner"
+            android:id="@+id/eventAddSpinnerEventType"
             android:layout_width="190dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="450dp"
+            android:layout_marginTop="384dp"
             android:layout_marginStart="180dp"
             android:gravity="center"
             android:padding="8dp"
             android:popupBackground="@color/transparent"
-            android:spinnerMode="dialog"/>
+            android:background="@drawable/solid_border"
+            android:spinnerMode="dialog"
+            android:textAlignment="center"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"/>
+    <ListView
+            android:id="@+id/eventAddListEventPictures"
+            android:dividerHeight="8sp"
+            android:divider="@android:color/transparent"
+            android:background="@drawable/solid_border"
+            android:clipToPadding="false"
+            android:choiceMode="singleChoice"
+            android:listSelector="@color/white"
+            android:layout_width="540dp"
+            android:layout_height="145dp"
+            android:layout_marginTop="430dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:padding="7dp"/>
+    <Button
+            android:id="@+id/eventAddButtonMakePicture"
+            android:text="@string/make_picture"
+            android:textSize="15sp"
+            android:layout_width="110dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="580dp"
+            android:layout_marginStart="41dp"/>
+    <Button
+            android:id="@+id/eventAddButtonAddNewPicture"
+            android:text="@string/add_new_picture"
+            android:textSize="15sp"
+            android:layout_width="110dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="580dp"
+            android:layout_marginStart="151dp"/>
+    <Button
+            android:id="@+id/eventAddButtonDeletePicture"
+            android:text="@string/delete_picture"
+            android:textSize="15sp"
+            android:layout_width="110dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="580dp"
+            android:layout_marginStart="261dp"/>
+
     <Button
             android:id="@+id/eventAddButtonAddNewEvent"
             android:text="@string/add_new_event"
             android:textSize="18sp"
             android:layout_width="300dp"
             android:layout_height="48dp"
-            android:layout_marginTop="530dp"
+            android:layout_marginTop="660dp"
             android:layout_marginStart="55dp"/>
     <Button
             android:id="@+id/eventAddButtonBack"
@@ -70,6 +112,6 @@
             android:textSize="16sp"
             android:layout_width="200dp"
             android:layout_height="48dp"
-            android:layout_marginTop="590dp"
+            android:layout_marginTop="710dp"
             android:layout_marginStart="105dp"/>
 </RelativeLayout>
