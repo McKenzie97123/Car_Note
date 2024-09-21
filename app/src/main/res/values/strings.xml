@@ -42,4 +42,5 @@
     <string name="delete_picture">delete picture</string>
     <string name="delete_icon">X</string>
     <string name="make_picture">make picture</string>
+    <string name="edit_event">edit event</string>
 </resources>

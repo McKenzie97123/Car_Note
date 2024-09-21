@@ -37,12 +37,12 @@ public class EventPictureAdapter extends BaseAdapter {
 
     @Override
     public Picture getItem(int position) {
-        return pictures.get(position);
+        return pictures.get(position - 1);
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return position - 1;
     }
 
     @SuppressLint({"ViewHolder", "InflateParams"})
@@ -53,7 +53,7 @@ public class EventPictureAdapter extends BaseAdapter {
         ImageView image = convertView.findViewById(R.id.eventPictureParentImageViewPicture);
         TextView name = convertView.findViewById(R.id.eventPictureParentTextViewName);
 
-        index.setText(String.valueOf(position));
+        index.setText(String.valueOf(position + 1));
         image.setImageBitmap(picturesBitmap.get(position));
         name.setText(pictures.get(position).getName());
 

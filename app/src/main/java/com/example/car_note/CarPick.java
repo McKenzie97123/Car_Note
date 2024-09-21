@@ -20,11 +20,12 @@ public class CarPick extends AppCompatActivity {
     CarPickAdapter carPickAdapter;
     ArrayList<Car> cars;
     private int pickedCarId = -1;
+    User currentUser;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.car_pick);
 
-        User currentUser = UserManager.getInstance().getCurrentUser();
+        currentUser = UserManager.getInstance().getCurrentUser();
 
         ListView list = findViewById(R.id.carPickListOfCars);
         Button pick = findViewById(R.id.carPickButtonPickCar);

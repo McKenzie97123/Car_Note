@@ -19,6 +19,7 @@
             android:layout_width="250dp"
             android:layout_height="48dp"
             android:inputType="text"
+            android:hint="@string/type_your_event_title"
             android:gravity="center"
             android:layout_marginTop="160dp"
             android:layout_marginStart="80dp"
@@ -27,14 +28,13 @@
     <EditText
             android:id="@+id/eventEditDescription"
             android:layout_width="330dp"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:background="@drawable/solid_border"
             android:inputType="textMultiLine|textNoSuggestions"
             android:gravity="center"
             android:layout_marginTop="225dp"
             android:layout_marginStart="41dp"
-            android:autofillHints="model"
-            tools:ignore="LabelFor"/>
+            android:autofillHints="model"/>
     <TextView
             android:id="@+id/eventEditTextView"
             android:text="@string/pick_type"
@@ -43,27 +43,67 @@
             android:gravity="center_vertical"
             android:layout_width="120dp"
             android:layout_height="39dp"
-            android:layout_marginTop="450dp"
+            android:layout_marginTop="383dp"
             android:layout_marginStart="40dp"/>
     <Spinner
-            android:id="@+id/eventEditSpinner"
+            android:id="@+id/eventEditSpinnerEventType"
             android:layout_width="190dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="450dp"
+            android:layout_marginTop="384dp"
             android:layout_marginStart="180dp"
             android:gravity="center"
             android:padding="8dp"
             android:popupBackground="@color/transparent"
-            android:spinnerMode="dialog"
             android:background="@drawable/solid_border"
+            android:spinnerMode="dialog"
+            android:textAlignment="center"
             style="@style/Widget.AppCompat.DropDownItem.Spinner"/>
+    <ListView
+            android:id="@+id/eventEditListEventPictures"
+            android:dividerHeight="8sp"
+            android:divider="@android:color/transparent"
+            android:background="@drawable/solid_border"
+            android:clipToPadding="false"
+            android:choiceMode="singleChoice"
+            android:listSelector="@color/white"
+            android:layout_width="540dp"
+            android:layout_height="145dp"
+            android:layout_marginTop="430dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:padding="7dp"/>
+    <Button
+            android:id="@+id/eventEditButtonMakePicture"
+            android:text="@string/make_picture"
+            android:textSize="15sp"
+            android:layout_width="110dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="580dp"
+            android:layout_marginStart="41dp"/>
+    <Button
+            android:id="@+id/eventEditButtonAddNewPicture"
+            android:text="@string/add_new_picture"
+            android:textSize="15sp"
+            android:layout_width="110dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="580dp"
+            android:layout_marginStart="151dp"/>
+    <Button
+            android:id="@+id/eventEditButtonDeletePicture"
+            android:text="@string/delete_picture"
+            android:textSize="15sp"
+            android:layout_width="110dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="580dp"
+            android:layout_marginStart="261dp"/>
+
     <Button
             android:id="@+id/eventEditButtonEditEvent"
-            android:text="@string/edit_picked_event"
+            android:text="@string/edit_event"
             android:textSize="18sp"
             android:layout_width="300dp"
             android:layout_height="48dp"
-            android:layout_marginTop="530dp"
+            android:layout_marginTop="660dp"
             android:layout_marginStart="55dp"/>
     <Button
             android:id="@+id/eventEditButtonBack"
@@ -71,6 +111,6 @@
             android:textSize="16sp"
             android:layout_width="200dp"
             android:layout_height="48dp"
-            android:layout_marginTop="590dp"
+            android:layout_marginTop="710dp"
             android:layout_marginStart="105dp"/>
 </RelativeLayout>

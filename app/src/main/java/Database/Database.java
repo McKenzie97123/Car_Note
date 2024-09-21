@@ -56,7 +56,7 @@ public class Database extends SQLiteOpenHelper {
         );
         db.execSQL("CREATE TABLE picture (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "EventId INTEGER," +
+                "eventId INTEGER," +
                 "name TEXT," +
                 "path TEXT," +
                 "format TEXT," +
@@ -240,7 +240,7 @@ public class Database extends SQLiteOpenHelper {
 
     public Event getSingleEvent(int eventId) throws SQLException {
         SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "SELECT * FROM event WHERE eventId = ?";
+        String sql = "SELECT * FROM event WHERE id = ?";
 
         try (Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(eventId)})) {
             if (cursor.moveToFirst()) {
@@ -281,12 +281,14 @@ public class Database extends SQLiteOpenHelper {
             db.update("event", values, whereClause, queryArgs);
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
+        } finally {
+            db.close();
         }
     }
 
     public void deleteEvent(int eventId) throws SQLException {
         SQLiteDatabase db = this.getWritableDatabase();
-        String whereClause = "eventId = ?";
+        String whereClause = "id = ?";
         String[] queryArgs = new String[]{String.valueOf(eventId)};
 
         try {
@@ -306,7 +308,7 @@ public class Database extends SQLiteOpenHelper {
         }
     }
 
-    public void insertPicture(Picture picture, int eventId) throws SQLException {
+    private void insertPicture(Picture picture, int eventId) throws SQLException {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -326,6 +328,38 @@ public class Database extends SQLiteOpenHelper {
         }
     }
 
+    public ArrayList<Picture> getPictures(int eventId) throws SQLException {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM picture WHERE eventId = ?";
+
+        ArrayList<Picture> pictures = new ArrayList<>();
+        try (Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(eventId)})) {
+            if (cursor.moveToFirst()) {
+                do {
+                    @SuppressLint("Range") Integer id = cursor.getInt(cursor.getColumnIndex("id"));
+                    @SuppressLint("Range") String pictureName = cursor.getString(cursor.getColumnIndex("name"));
+                    @SuppressLint("Range") String picturePath = cursor.getString(cursor.getColumnIndex("path"));
+                    @SuppressLint("Range") String pictureFormat = cursor.getString(cursor.getColumnIndex("format"));
+                    @SuppressLint("Range") Boolean pictureDeleted = cursor.getInt(cursor.getColumnIndex("format")) == 1;
+
+                    Picture picture = new Picture(id, eventId, pictureName, picturePath, pictureFormat, pictureDeleted);
+
+                    if (picture.getId() != null) {
+                        pictures.add(picture);
+                    }
+
+                } while (cursor.moveToNext());
+                return pictures;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        } finally {
+            db.close();
+        }
+    }
+
     public void deletePicture(int pictureId) throws SQLException {
         SQLiteDatabase db = this.getWritableDatabase();
         String whereClause = "pictureId = ?";
@@ -335,6 +369,22 @@ public class Database extends SQLiteOpenHelper {
             db.delete("event", whereClause, queryArgs);
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
+        } finally {
+            db.close();
+        }
+    }
+
+    public void deleteAllEventPictures(int eventId) throws SQLException {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = "eventId = ?";
+        String[] queryArgs = new String[]{String.valueOf(eventId)};
+
+        try {
+            db.delete("picture", whereClause, queryArgs);
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        } finally {
+            db.close();
         }
     }
 }
