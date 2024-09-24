@@ -3,26 +3,33 @@ package com.example.car_note;
 import Adapter.CarMainDashboardAdapter;
 import Class.Car;
 import Class.Event;
+import Class.Picture;
 import Class.User;
 import Database.Database;
 import Manager.CarManager;
 import Manager.EventManager;
 import Manager.UserManager;
+import Service.EventPictureService;
+import Service.PdfService;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static Class.Event.EVENT_TYPES;
 
 
 public class CarMainDashboard extends AppCompatActivity {
-    private static ArrayList<String> SORT_TYPES = new ArrayList<>(Arrays.asList(EVENT_TYPES));
+    private static final ArrayList<String> SORT_TYPES = new ArrayList<>(Arrays.asList(EVENT_TYPES));
     Database db = new Database(this);
+    PdfService pdfService = new PdfService();
+    EventPictureService eventPictureService = new EventPictureService(this);
     ArrayList<Event> events;
     CarMainDashboardAdapter carMainDashboardAdapter;
     private int pickedEventId = -1;
@@ -49,6 +56,7 @@ public class CarMainDashboard extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
         Button sort = findViewById(R.id.mainDashboardButtonSortEvents);
+        Button pdf = findViewById(R.id.mainDashboardButtonGeneratePdf);
         Button back = findViewById(R.id.mainDashboardButtonBackToCarPick);
 
         events = getListOfEvents(currentUser.getId(), currentCar.getId());
@@ -97,6 +105,8 @@ public class CarMainDashboard extends AppCompatActivity {
             list.setAdapter(carMainDashboardAdapter);
         });
 
+        pdf.setOnClickListener(v -> createPdf());
+
         back.setOnClickListener(v -> returnToCarPick());
     }
 
@@ -136,6 +146,22 @@ public class CarMainDashboard extends AppCompatActivity {
             }
         }
         return events;
+    }
+
+    private void createPdf() {
+        ArrayList<Event> pdfEvents = events;
+        ArrayList<Picture> pdfPictures = new ArrayList<>();
+        pdfEvents = eventPictureService.updateEventsWithPictures(pdfEvents);
+        HashMap<Event, ArrayList<Bitmap>> eventsWithBitmaps = new HashMap<>();
+        for (Event event: pdfEvents) {
+            ArrayList<Picture> pictures = event.getPictures();
+            pdfPictures.addAll(pictures);
+            ArrayList<Bitmap> pdfPicturesBitmaps = eventPictureService.getPicturesBitmapFromFiles(pdfPictures);
+            eventsWithBitmaps.put(event, pdfPicturesBitmaps);
+        }
+
+        pdfService.generatePDF(this, eventsWithBitmaps, currentUser.getId(), currentCar.getId());
+        Toast.makeText(this, "PDF save into directory: Documents", Toast.LENGTH_LONG).show();
     }
 
     private void returnToCarPick() {

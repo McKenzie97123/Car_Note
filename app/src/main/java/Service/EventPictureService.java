@@ -1,7 +1,10 @@
 package Service;
 
+import Class.Event;
 import Class.Picture;
+import Database.Database;
 import android.content.Context;
+import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.Toast;
@@ -9,6 +12,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class EventPictureService {
+    private Database database;
+
+
+    public EventPictureService(Context context) {
+        this.database = new Database(context);
+    }
+
     public ArrayList<Picture> deletePicture(
             Context context,
             ArrayList<Picture> pictures,
@@ -27,7 +37,7 @@ public class EventPictureService {
                     "You haven't selected a picture to delete, click on the picture you want to delete",
                     Toast.LENGTH_LONG
             ).show();
-             return pictures;
+            return pictures;
         }
 
         pictures.remove(pickedPictureId);
@@ -52,5 +62,21 @@ public class EventPictureService {
         }
 
         return picturesBitmap;
+    }
+
+    public ArrayList<Event> updateEventsWithPictures(ArrayList<Event> events) {
+        ArrayList<Picture> eventPictures;
+
+        for (Event event : events) {
+            try {
+                eventPictures = database.getPictures(event.getId());
+            } catch (Exception e) {
+                throw new SQLException(e.getMessage());
+            }
+
+            event.setPictures(eventPictures);
+        }
+
+        return events;
     }
 }

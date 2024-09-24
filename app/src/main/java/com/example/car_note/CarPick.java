@@ -54,7 +54,7 @@ public class CarPick extends AppCompatActivity {
         add.setOnClickListener(v -> addCarLayout());
     }
 
-    private ArrayList<Car> getListOfCars(Integer userId) {
+    private ArrayList<Car> getListOfCars(int userId) {
         try {
             return db.getListOfCars(userId);
         } catch (Exception e) {

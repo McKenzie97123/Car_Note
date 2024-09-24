@@ -19,7 +19,7 @@ public class Event {
     private String description;
     private String date;
     private String type;
-    private ArrayList<Picture> picture = null;
+    private ArrayList<Picture> pictures = null;
 
 
     public Event(
@@ -30,7 +30,7 @@ public class Event {
             String description,
             String date,
             String type,
-            ArrayList<Picture> picture
+            ArrayList<Picture> pictures
     ) {
         this.id = id;
         this.userId = userId;
@@ -39,7 +39,7 @@ public class Event {
         this.description = description;
         this.date = date;
         this.type = type;
-        this.picture = picture;
+        this.pictures = pictures;
     }
 
     public Integer getId() {
@@ -70,7 +70,11 @@ public class Event {
         return type;
     }
 
-    public ArrayList<Picture> getPicture() {
-        return picture;
+    public ArrayList<Picture> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(ArrayList<Picture> pictures) {
+        this.pictures = pictures;
     }
 }

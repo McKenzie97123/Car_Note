@@ -8,10 +8,12 @@ import Class.User;
 import Database.Database;
 import Manager.CarManager;
 import Manager.UserManager;
+import Service.EventPictureService;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -32,19 +34,25 @@ import java.util.Date;
 public class EventAdd extends AppCompatActivity {
     private static final String[] EVENT_TYPES = Event.EVENT_TYPES;
     Database db = new Database(this);
+    EventPictureService service = new EventPictureService(this);
     ArrayList<String> types = new ArrayList<>(Arrays.asList(EVENT_TYPES));
     ArrayList<Picture> pictures = new ArrayList<>();
     EventPictureAdapter eventPictureAdapter;
     ArrayList<Bitmap> picturesBitmap = new ArrayList<>();
     ListView picturesList;
     private int pickedPictureId = -1;
+    User currentUser;
+    Car currentCar;
     private static final int CAPTURE_IMAGE_ACTIVITY = 22;
+    private static final int SELECT_IMAGE_ACTIVITY = 222;
+    ImageView IVPreviewImage;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_add);
 
-        User currentUser = UserManager.getInstance().getCurrentUser();
-        Car currentCar = CarManager.getInstance().getCurrentCar();
+        currentUser = UserManager.getInstance().getCurrentUser();
+        currentCar = CarManager.getInstance().getCurrentCar();
 
         EditText title = findViewById(R.id.eventAddTitle);
         EditText description = findViewById(R.id.eventAddDescription);
@@ -79,8 +87,12 @@ public class EventAdd extends AppCompatActivity {
         });
         picturesList.setOnItemClickListener((adapterView, view, position, id) -> pickedPictureId = position);
 
+        addPictureButton.setOnClickListener(v -> pickPicture());
+
         deletePictureButton.setOnClickListener(v -> {
-            deletePicure();
+            pictures = service.deletePicture(this, pictures, pickedPictureId);
+            pickedPictureId = -1;
+            picturesList.setAdapter(eventPictureAdapter);
         });
 
         back.setOnClickListener(v -> returnToCarMainDashboard());
@@ -116,21 +128,22 @@ public class EventAdd extends AppCompatActivity {
 
         if (pictures.isEmpty()) {
             Toast.makeText(this, "Event has been added without any picture", Toast.LENGTH_LONG).show();
+            returnToCarMainDashboard();
             return;
         }
 
         insertPictures(pictures, eventId);
         Toast.makeText(this, "Event has been added with " + pictures.size() + " pictures"
                 , Toast.LENGTH_LONG).show();
+
+        returnToCarMainDashboard();
     }
 
     private int insertEvent(Event event) {
         int eventId = 0;
-
         try {
             eventId = db.insertEvent(event);
 
-            returnToCarMainDashboard();
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -141,45 +154,19 @@ public class EventAdd extends AppCompatActivity {
         try {
             db.insertPictures(pictures, eventId);
 
-            returnToCarMainDashboard();
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
-    private void deletePicure() {
-        if (pictures.isEmpty()) {
-            Toast.makeText(this,
-                    "Firstly try to add picture, then delete it",
-                    Toast.LENGTH_LONG
-            ).show();
-            return;
-        }
+    private void pickPicture() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
 
-        if (pickedPictureId < 0) {
-            Toast.makeText(this,
-                    "You haven't selected a picture to delete, click on the picture you want to delete",
-                    Toast.LENGTH_LONG
-            ).show();
-            return;
-        }
-
-        pictures.remove(pickedPictureId);
-        Toast.makeText(this,
-                "Picked picture has been removed from list",
-                Toast.LENGTH_LONG
-        ).show();
-        picturesList.setAdapter(eventPictureAdapter);
-
-        if (pictures.isEmpty()) {
-            pickedPictureId = -1;
-        }
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE_ACTIVITY);
     }
 
-    private void returnToCarMainDashboard() {
-        Intent intent = new Intent(getApplicationContext(), CarMainDashboard.class);
-        startActivity(intent);
-    }
     @Override
     protected void onActivityResult(
             int requestCode,
@@ -192,7 +179,10 @@ public class EventAdd extends AppCompatActivity {
                 Bitmap imageBitmap = (Bitmap)data.getExtras().get("data");
 
                 if (imageBitmap != null) {
-                    File pictureDirectory = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "pictures");
+                    File pictureDirectory = new File(
+                            getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                            , currentUser.getId() + "/" + currentCar.getId()
+                    );
                     if (!pictureDirectory.exists()) {
                         boolean mkdirResult = pictureDirectory.mkdirs();
                         if (mkdirResult) {
@@ -230,6 +220,17 @@ public class EventAdd extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Picture Not taken", Toast.LENGTH_LONG).show();
         }
+
+        if (requestCode == SELECT_IMAGE_ACTIVITY && resultCode == Activity.RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            if (null != selectedImageUri) {
+                IVPreviewImage.setImageURI(selectedImageUri);
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+    private void returnToCarMainDashboard() {
+        Intent intent = new Intent(getApplicationContext(), CarMainDashboard.class);
+        startActivity(intent);
     }
 }

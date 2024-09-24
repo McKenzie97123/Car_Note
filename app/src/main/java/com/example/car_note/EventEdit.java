@@ -41,7 +41,7 @@ import static Class.Event.EVENT_TYPES;
 
 public class EventEdit extends AppCompatActivity {
     Database db = new Database(this);
-    EventPictureService service = new EventPictureService();
+    EventPictureService service = new EventPictureService(this);
     ArrayList<String> types = new ArrayList<>(Arrays.asList(EVENT_TYPES));
     ArrayList<Picture> pictures = new ArrayList<>();
     EventPictureAdapter eventPictureAdapter;
