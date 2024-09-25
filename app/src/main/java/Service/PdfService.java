@@ -15,6 +15,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PdfService {
@@ -35,67 +37,56 @@ public class PdfService {
         title.setTextSize(15);
         title.setTextAlign(Paint.Align.LEFT);
 
-        AtomicInteger pageCounter = new AtomicInteger(1);
-
-        eventsWithBitmaps.forEach((event, bitmaps) -> {
+        AtomicInteger pageCounter = new AtomicInteger(0);
+        Iterator<Map.Entry<Event, ArrayList<Bitmap>>> iterator = eventsWithBitmaps.entrySet().iterator();
+        while (iterator.hasNext()) {
             PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(pdfPageWidth, pdfPageHeight, pageCounter.get()).create();
             PdfDocument.Page page = pdfDocument.startPage(pageInfo);
             Canvas canvas = page.getCanvas();
 
+            Map.Entry<Event, ArrayList<Bitmap>> firstEntry = iterator.next();
             int yPosition = 50;
             int xPosition = 60;
 
-            String eventIndex = String.valueOf(pageCounter.get());
-            canvas.drawText("Event number: " + eventIndex, xPosition, yPosition, title);
-            yPosition += 30;
-            canvas.drawText("Event title: " + event.getTitle(), xPosition, yPosition, title);
-            yPosition += 30;
-            canvas.drawText("Event description: " + event.getDescription(), xPosition, yPosition, title);
-            yPosition += 30;
-            canvas.drawText("Event type: " + event.getType(), xPosition, yPosition, title);
-            yPosition += 30;
+            pageCounter.getAndIncrement();
+            canvas.drawText("Event number: " + pageCounter.get(), xPosition, yPosition, title);
+            yPosition += 28;
+            canvas.drawText("Event title: " + firstEntry.getKey().getTitle(), xPosition, yPosition, title);
+            yPosition += 28;
+            canvas.drawText("Event description: " + firstEntry.getKey().getDescription(), xPosition, yPosition, title);
+            yPosition += 28;
+            canvas.drawText("Event type: " + firstEntry.getKey().getType(), xPosition, yPosition, title);
+            yPosition += 28;
             canvas.drawText("Event pictures: ", xPosition, yPosition, title);
 
-            int imagePosition = 1;
-            int incrementalYPosition = 30;
-            int xImagePosition = 50;
-            int yImagePosition = yPosition + 30;
-            int columnCount = 0;
-            for (Bitmap bitmap : bitmaps) {
-                canvas.drawBitmap(bitmap, xImagePosition, yImagePosition, paint);
+            drawEventImages(canvas, firstEntry.getValue(), yPosition + 28, xPosition, paint);
 
-                columnCount++;
-                xImagePosition += 130;
 
-                if (columnCount == 5) {
-                    columnCount = 0;
-                    xImagePosition = 50;
-                    yImagePosition += incrementalYPosition;
-                }
+            if (iterator.hasNext()) {
+                Map.Entry<Event, ArrayList<Bitmap>> secondEntry = iterator.next();
+                yPosition = pdfPageHeight / 2;
 
-                imagePosition++;
-                if (imagePosition > 10) {
-                    break;
-                }
-            }
-
-            try {
-                pdfDocument.finishPage(page);
                 pageCounter.getAndIncrement();
-            } catch (Exception e) {
-                e.printStackTrace();
+                canvas.drawText("Event number: " + pageCounter.get(), xPosition, yPosition, title);
+                yPosition += 28;
+                canvas.drawText("Event title: " + secondEntry.getKey().getTitle(), xPosition, yPosition, title);
+                yPosition += 28;
+                canvas.drawText("Event description: " + secondEntry.getKey().getDescription(), xPosition, yPosition, title);
+                yPosition += 28;
+                canvas.drawText("Event type: " + secondEntry.getKey().getType(), xPosition, yPosition, title);
+                yPosition += 28;
+                canvas.drawText("Event pictures: ", xPosition, yPosition, title);
+
+                drawEventImages(canvas, secondEntry.getValue(), yPosition + 28, xPosition, paint);
             }
-        });
-        pdfDocument.close();
+
+            pdfDocument.finishPage(page);
+        }
 
         File picturesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         File fileDirectory = new File(picturesDir, userId + "/" + carId + "/Pdfs/");
-
         if (!fileDirectory.exists()) {
             boolean mkdirResult = fileDirectory.mkdirs();
-            fileDirectory.setReadable(true);
-            fileDirectory.setWritable(true);
-            fileDirectory.setExecutable(true);
             if (mkdirResult) {
                 Toast.makeText(context, "Created directory: " + fileDirectory.getPath(), Toast.LENGTH_LONG).show();
             } else {
@@ -114,6 +105,32 @@ public class PdfService {
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(context, "Failed to save PDF", Toast.LENGTH_LONG).show();
+        }
+        pdfDocument.close();
+    }
+
+    private void drawEventImages(Canvas canvas, ArrayList<Bitmap> bitmaps, int yPosition, int xPosition, Paint paint) {
+        int xImagePosition = xPosition;
+        int yImagePosition = yPosition;
+        int columnCount = 0;
+        int imagePosition = 1;
+
+        for (Bitmap bitmap : bitmaps) {
+            canvas.drawBitmap(bitmap, xImagePosition, yImagePosition, paint);
+
+            columnCount++;
+            xImagePosition += 130;
+
+            if (columnCount == 5) {
+                columnCount = 0;
+                xImagePosition = xPosition;
+                yImagePosition += 150;
+            }
+
+            imagePosition++;
+            if (imagePosition > 10) {
+                break;
+            }
         }
     }
 }
