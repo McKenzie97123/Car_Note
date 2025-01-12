@@ -174,7 +174,7 @@ public class EventAdd extends AppCompatActivity {
             @Nullable @org.jetbrains.annotations.Nullable
             Intent data
     ) {
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY && resultCode == Activity.RESULT_OK) {
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY && resultCode == Activity.RESULT_OK && data != null) {
             try {
                 Bitmap imageBitmap = (Bitmap)data.getExtras().get("data");
 
@@ -221,7 +221,7 @@ public class EventAdd extends AppCompatActivity {
             Toast.makeText(this, "Picture Not taken", Toast.LENGTH_LONG).show();
         }
 
-        if (requestCode == SELECT_IMAGE_ACTIVITY && resultCode == Activity.RESULT_OK) {
+        if (requestCode == SELECT_IMAGE_ACTIVITY && resultCode == Activity.RESULT_OK && data != null) {
             Uri selectedImageUri = data.getData();
             if (null != selectedImageUri) {
                 IVPreviewImage.setImageURI(selectedImageUri);

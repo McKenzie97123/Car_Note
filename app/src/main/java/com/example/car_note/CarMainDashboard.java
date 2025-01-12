@@ -26,7 +26,11 @@ import static Class.Event.EVENT_TYPES;
 
 
 public class CarMainDashboard extends AppCompatActivity {
-    private static final ArrayList<String> SORT_TYPES = new ArrayList<>(Arrays.asList(EVENT_TYPES));
+    private static final ArrayList<String> SORT_TYPES;
+    static {
+        SORT_TYPES = new ArrayList<>(Arrays.asList(EVENT_TYPES));
+        SORT_TYPES.add(0, "all");
+    }
     Database db = new Database(this);
     PdfService pdfService = new PdfService();
     EventPictureService eventPictureService = new EventPictureService(this);
@@ -51,7 +55,6 @@ public class CarMainDashboard extends AppCompatActivity {
         Button delete = findViewById(R.id.mainDashboardButtonDeleteEvent);
 
         Spinner spinner = findViewById(R.id.mainDashboardSpinner);
-        SORT_TYPES.add(0, "all");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, SORT_TYPES);
         spinner.setAdapter(adapter);
 

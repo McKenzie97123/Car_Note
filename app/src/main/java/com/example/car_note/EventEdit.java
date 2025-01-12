@@ -35,9 +35,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-import static Class.Picture.PICTURE_FILE_NAME;
-import static Class.Picture.PICTURE_FORMAT;
 import static Class.Event.EVENT_TYPES;
+import static Class.Picture.PICTURE_FORMAT;
 
 public class EventEdit extends AppCompatActivity {
     Database db = new Database(this);
@@ -104,7 +103,7 @@ public class EventEdit extends AppCompatActivity {
         addPictureButton.setOnClickListener(v -> pickPicture());
 
         deletePictureButton.setOnClickListener(v -> {
-            pictures = service.deletePicture(getApplicationContext(), pictures, pickedPictureId);
+            pictures = service.deletePicture(this, pictures, pickedPictureId);
             pickedPictureId = -1;
             picturesList.setAdapter(eventPictureAdapter);
         });
@@ -137,16 +136,16 @@ public class EventEdit extends AppCompatActivity {
         Date now = calendar.getTime();
         String eventDateInString = simpleDateFormat.format(now);
 
-        Event event = new Event(null, userId, carId, title, description, eventDateInString, type, null);
+        Event event = new Event(currentEvent.getId(), userId, carId, title, description, eventDateInString, type, null);
         updateEvent(event);
 
         if (pictures.isEmpty()) {
-            Toast.makeText(this, "Event has been added without any picture", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Event has been updated without any picture", Toast.LENGTH_LONG).show();
             return;
         }
 
         updatePictures(pictures, pickedEventId);
-        Toast.makeText(this, "Event has been added with new pictures", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Event has been updated with new pictures", Toast.LENGTH_LONG).show();
         returnToCarMainDashboard();
     }
 
@@ -155,7 +154,6 @@ public class EventEdit extends AppCompatActivity {
             db.updateEvent(event);
 
             Toast.makeText(this, "event has been edited", Toast.LENGTH_LONG).show();
-            returnToCarMainDashboard();
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -211,7 +209,6 @@ public class EventEdit extends AppCompatActivity {
             @Nullable @org.jetbrains.annotations.Nullable
             Intent data
     ) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_IMAGE_ACTIVITY && resultCode == Activity.RESULT_OK && data != null) {
             try {
                 Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
@@ -229,7 +226,8 @@ public class EventEdit extends AppCompatActivity {
                         }
                     }
 
-                    File imageFile = new File(pictureDirectory, PICTURE_FILE_NAME);
+                    String pictureFileName = "IMG_" + System.currentTimeMillis() + ".jpg";
+                    File imageFile = new File(pictureDirectory, pictureFileName);
 
                     try (FileOutputStream out = new FileOutputStream(imageFile)) {
                         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
@@ -239,7 +237,7 @@ public class EventEdit extends AppCompatActivity {
                     Picture picture = new Picture(
                             null,
                             null,
-                            PICTURE_FILE_NAME,
+                            pictureFileName,
                             pictureDirectory.getAbsolutePath(),
                             ".jpg",
                             false);
@@ -261,14 +259,16 @@ public class EventEdit extends AppCompatActivity {
         if (requestCode == SELECT_IMAGE_ACTIVITY && resultCode == Activity.RESULT_OK && data != null) {
             Uri imageUri = data.getData();
             String picturePath = imageUri.getPath();
+            String pictureName = "IMG_" + System.currentTimeMillis() + ".jpg";
             Picture picture = new Picture(
                     null,
                     null,
-                    PICTURE_FILE_NAME,
+                    pictureName,
                     picturePath,
                     PICTURE_FORMAT,
                     false
                     );
+
             Bitmap imageBitmap = uriToBitmap(imageUri);
             if (imageBitmap != null) {
                 picturesBitmap.add(imageBitmap);
@@ -277,9 +277,8 @@ public class EventEdit extends AppCompatActivity {
             }
             pictures.add(picture);
             picturesList.setAdapter(eventPictureAdapter);
-        } else {
-            Toast.makeText(this, "Picture not selected", Toast.LENGTH_LONG).show();
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private Bitmap uriToBitmap(Uri selectedFileUri) {

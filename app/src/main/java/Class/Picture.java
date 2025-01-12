@@ -8,7 +8,6 @@ public class Picture {
     private String format;
     private Boolean deleted;
     public static final String PICTURE_FORMAT = ".jpg";
-    public static final String PICTURE_FILE_NAME = "IMG_" + System.currentTimeMillis() + PICTURE_FORMAT;
 
     public Picture(
             Integer id,

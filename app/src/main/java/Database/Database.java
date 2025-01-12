@@ -274,7 +274,7 @@ public class Database extends SQLiteOpenHelper {
         values.put("type", event.getType());
         values.put("date", event.getDate());
 
-        String whereClause = "eventId = ?";
+        String whereClause = "id = ?";
         String[] queryArgs = new String[]{String.valueOf(event.getId())};
 
         try {
